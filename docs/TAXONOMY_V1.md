@@ -1,94 +1,64 @@
-# HyConCheck – Taxonomie V1
+# HyConCheck – Widerspruchstaxonomie V1
 
-Stand: 17.09.2026 – Rahmenfassung. Die fünf Obertypen sind verbindlich vorgegeben. Ihre **Operationalisierung beginnt in diesem Repository neu**; kein Obertyp ist abgeschlossen. Die Arbeitsdefinitionen unten sind vorläufige Ausgangspunkte für AP2 und keine finalen Festlegungen.
+Stand: 17.09.2026 – Rahmenfassung nach Master-Prompt §9 ([HYCONCHECK_MASTER_PROMPT.md](HYCONCHECK_MASTER_PROMPT.md)). Taxonomie-Version: **V1.0-Rahmen** (noch keine operationalisierte Fassung). Die fachliche Operationalisierung hat in diesem Repository **noch nicht begonnen** (§39.6); sie ist Gegenstand von AP1 (BL-010 ff.). Kein Obertyp ist abgeschlossen.
 
-## 1. Zweck und Geltung
+## 1. Verbindliche oberste Ebene
 
-Die Taxonomie ordnet Inkonsistenzen in technischen Dokumentenbeständen nach der Art der betroffenen Aussage. Sie dient
+Die fünf Obertypen sind verbindlich festgelegt:
 
-- als Zielschema für Annotation und Ground Truth (AP3),
-- als Gliederung für Baselines, Evidenzgraph und Fusion (AP4–AP5),
-- als Berichtsdimension der Evaluation (AP6).
+1. Fakt und Wert
+2. Zeit und Status
+3. Modalität und Norm
+4. Akteur und Verantwortung
+5. Abhängigkeit und Schnittstelle
 
-## 2. Statusdefinition je Obertyp
+Zusätzliche Kategorien sind zunächst Untertypen oder Sekundärtags. Es wird **nicht** parallel eine neue 17-teilige Haupttaxonomie eingeführt.
 
-Ein Obertyp gilt erst dann als **operationalisiert**, wenn alle folgenden Bestandteile im Repository vorliegen und geprüft sind:
+## 2. Pflichtbestandteile je Obertyp (§9)
 
-1. Definition und Abgrenzung zu den übrigen Obertypen
-2. Untertypen (mindestens eine Ebene) mit Definition
-3. Annotationsregeln inkl. Entscheidungsregeln für Grenzfälle
-4. Mindestens je ein positives und ein negatives Beispiel je Untertyp (mit Quellenangabe oder als eindeutig gekennzeichnetes Konstrukt)
-5. Pilotannotation mit dokumentierter Übereinstimmung
+Für jeden Obertyp sind in der Operationalisierung mindestens festzulegen:
 
-Statuswerte: `offen` → `in Operationalisierung` → `pilotiert` → `operationalisiert`. Der Status `abgeschlossen` wird für Obertypen nicht vergeben.
+- Definition
+- Entscheidungstest
+- Einschlusskriterien
+- Ausschlusskriterien
+- Grenzfälle
+- Abgrenzung zu anderen Obertypen
+- synthetische Positivbeispiele
+- synthetische Negativbeispiele
+- unklare Beispiele
 
-## 3. Übersicht
+## 3. Entscheidungslabels und Sonderkennzeichnungen (§9)
 
-| Nr. | Obertyp | Arbeitsdefinition (vorläufig) | Status |
-|---|---|---|---|
-| 1 | Fakt und Wert | Unvereinbare Sachaussagen oder Werte (Zahlen, Einheiten, Bezeichner, Eigenschaften) zum selben Gegenstand | offen |
-| 2 | Zeit und Status | Unvereinbare Zeitangaben, Fristen, Versionen, Gültigkeiten oder Zustandsangaben | offen |
-| 3 | Modalität und Norm | Unvereinbare Verbindlichkeitsgrade, Erlaubnisse/Verbote oder Normbezüge | offen |
-| 4 | Akteur und Verantwortung | Unvereinbare Angaben zu Rollen, Zuständigkeiten, Ausführenden oder Freigebenden | offen |
-| 5 | Abhängigkeit und Schnittstelle | Unvereinbare Angaben zu Voraussetzungen, Verweisen, Schnittstellen oder Kopplungen | offen |
+Zulässige Entscheidungslabels: **Widerspruch**, **kein Widerspruch**, **unklar**.
 
-## 4. Obertypen im Einzelnen
+Fortschreibung, fehlender Kontext, Versionswechsel und Mehrdeutigkeit sind gesondert zu kennzeichnen und dürfen nicht automatisch als Widerspruch gelten. Die Kennzeichnung erfolgt als Sekundärtag; ihre genaue Form wird in der Operationalisierung festgelegt.
 
-### 4.1 Fakt und Wert
+## 4. Stand je Obertyp
 
-- **Arbeitsdefinition:** Zwei oder mehr Aussagen schreiben demselben Gegenstand unvereinbare Fakten oder Werte zu (z. B. Zahlenwert, Einheit, Toleranz, Materialangabe, Bezeichner).
-- **Offene Fragen:** Umgang mit Einheitenumrechnung und Rundung; Toleranzbereiche; identische Werte unter verschiedenen Bezeichnern; implizite Werte.
-- **Untertypen:** offen.
-- **Annotationsregeln:** offen.
-- **Beispiele:** offen.
-- **Status:** offen.
+Statuswerte (Repository-Konvention): `offen` → `in Operationalisierung` → `operationalisiert` (alle Pflichtbestandteile aus Abschnitt 2 liegen vor und sind geprüft). Ein Status „abgeschlossen“ wird für Obertypen nicht vergeben.
 
-### 4.2 Zeit und Status
+| Nr. | Obertyp | Definition | Entscheidungstest | Ein-/Ausschluss | Grenzfälle | Abgrenzung | Beispiele (pos./neg./unklar) | Status |
+|---|---|---|---|---|---|---|---|---|
+| 1 | Fakt und Wert | offen | offen | offen | offen | offen | offen | offen |
+| 2 | Zeit und Status | offen | offen | offen | offen | offen | offen | offen |
+| 3 | Modalität und Norm | offen | offen | offen | offen | offen | offen | offen |
+| 4 | Akteur und Verantwortung | offen | offen | offen | offen | offen | offen | offen |
+| 5 | Abhängigkeit und Schnittstelle | offen | offen | offen | offen | offen | offen | offen |
 
-- **Arbeitsdefinition:** Aussagen zu Zeitpunkten, Zeiträumen, Fristen, Versionen, Gültigkeiten oder Bearbeitungszuständen desselben Gegenstands sind unvereinbar (z. B. „freigegeben“ vs. „in Prüfung“; zwei verschiedene Liefertermine).
-- **Offene Fragen:** relative vs. absolute Zeitangaben; Versionsketten; zulässige Statusübergänge; zeitliche Gültigkeit von Aussagen (was war wann korrekt?).
-- **Untertypen:** offen.
-- **Annotationsregeln:** offen.
-- **Beispiele:** offen.
-- **Status:** offen.
+## 5. Verwendung
 
-### 4.3 Modalität und Norm
+- Zielschema für Annotation und Ground Truth (§10, §12; AP2).
+- Berichtsdimension der Evaluation (Macro-F1 nach Widerspruchstyp, §16).
+- Taxonomie-Version ist Pflichtfeld jedes Experiments (§18) und jeder Ground-Truth-Dokumentation (§12).
 
-- **Arbeitsdefinition:** Aussagen unterscheiden sich im Verbindlichkeitsgrad oder im normativen Bezug in unvereinbarer Weise (z. B. „muss“ vs. „kann“ zum selben Sachverhalt; Verbot vs. Erlaubnis; widersprüchliche Normverweise).
-- **Offene Fragen:** Skala der Modalitäten (muss/soll/kann/darf nicht); Priorität von Normquellen; Ausnahmen und Bedingungen; sprachliche Varianz.
-- **Untertypen:** offen.
-- **Annotationsregeln:** offen.
-- **Beispiele:** offen.
-- **Status:** offen.
+## 6. Vorgehen zur Operationalisierung (AP1)
 
-### 4.4 Akteur und Verantwortung
+Die Operationalisierung erfolgt nach dem Stand der Technik (BL-001 bis BL-003) und wird je Obertyp mit allen Pflichtbestandteilen aus Abschnitt 2 in diesem Dokument versioniert (Backlog BL-010 bis BL-013). Änderungen an Definitionen oder Entscheidungstests nach Beginn der Annotation werden mit Datum, Begründung und Auswirkung auf bestehende Labels dokumentiert (§12).
 
-- **Arbeitsdefinition:** Aussagen zu Rollen, Zuständigkeiten, Ausführenden, Prüfenden oder Freigebenden desselben Vorgangs sind unvereinbar (z. B. zwei verschiedene Verantwortliche; Rolle ohne Zuordnung; widersprüchliche Freigabeinstanz).
-- **Offene Fragen:** Rollen vs. Personen vs. Organisationseinheiten; Delegation und Vertretung; Mehrfachverantwortung; Anonymisierung in Benchmarkdaten.
-- **Untertypen:** offen.
-- **Annotationsregeln:** offen.
-- **Beispiele:** offen.
-- **Status:** offen.
+## 7. Änderungshistorie
 
-### 4.5 Abhängigkeit und Schnittstelle
-
-- **Arbeitsdefinition:** Aussagen zu Voraussetzungen, Verweisen, Schnittstellen, Datenformaten oder Kopplungen zwischen Komponenten, Dokumenten oder Prozessen sind unvereinbar (z. B. Verweis auf nicht existierendes Kapitel; unterschiedliche Schnittstellenparameter auf beiden Seiten; zirkuläre Voraussetzungen).
-- **Offene Fragen:** Granularität (Dokument, Abschnitt, Aussage, Element); gerichtete vs. ungerichtete Abhängigkeiten; Versionsbezug von Schnittstellen; Abgrenzung zu „Zeit und Status“ bei Versionskonflikten.
-- **Untertypen:** offen.
-- **Annotationsregeln:** offen.
-- **Beispiele:** offen.
-- **Status:** offen.
-
-## 5. Querschnittsfragen (offen)
-
-- Mehrfachzuordnung: Kann eine Inkonsistenz mehreren Obertypen angehören? Regel für Primärtyp?
-- Schweregrad und Sicherheit: Werden Schwere und Annotationskonfidenz mitgeführt?
-- Bezugseinheit: Aussagepaar, Aussagegruppe, Dokumentpaar?
-- Nicht-Inkonsistenzen: Wie werden Scheinwidersprüche (Kontext, Bedingungen, Zeitbezug) als Negativbeispiele erfasst?
-- Sprache: Deutsch, Englisch, gemischt?
-
-## 6. Änderungshistorie
-
-| Datum | Änderung |
-|---|---|
-| 17.09.2026 | Erstfassung: Obertypen, Statusdefinition, vorläufige Arbeitsdefinitionen, offene Fragen |
+| Datum | Version | Änderung |
+|---|---|---|
+| 17.09.2026 | V1.0-Rahmen | Erstfassung: Obertypen, Pflichtbestandteile, Entscheidungslabels, Sonderkennzeichnungen, Statusdefinition |
+| 17.09.2026 | V1.0-Rahmen | Angleichung an Master-Prompt §9: Pflichtbestandteile und Labels nach §9; frühere vorläufige Arbeitsdefinitionen entfernt, da die Operationalisierung erst in AP1 beginnt (§39.6) |
