@@ -1,0 +1,67 @@
+work_package,ap_title,subactivity,planned_hours,planned_artifact
+AP1,"Lösungsraum, Stand der Technik und Widerspruchstaxonomie",Rechercheprotokoll und Suchstrategie für Stand der Technik definieren,16,Rechercheprotokoll
+AP1,"Lösungsraum, Stand der Technik und Widerspruchstaxonomie","Literatur zu NLI, Contradiction Detection und Fact Verification analysieren",32,Literaturmatrix NLI
+AP1,"Lösungsraum, Stand der Technik und Widerspruchstaxonomie","Literatur zu Temporal Reasoning, Statusmodellen und Evidenzgraphen analysieren",32,Literaturmatrix Graph/Temporal
+AP1,"Lösungsraum, Stand der Technik und Widerspruchstaxonomie",Stand-der-Technik-Vergleichsmatrix und technische Forschungslücke ableiten,24,SOTA-Vergleichsmatrix
+AP1,"Lösungsraum, Stand der Technik und Widerspruchstaxonomie",Fünf Obertypen der Widerspruchstaxonomie formal definieren,32,Taxonomie-Definitionen
+AP1,"Lösungsraum, Stand der Technik und Widerspruchstaxonomie",Ein-/Ausschlusskriterien und Entscheidungstests je Obertyp entwickeln,32,Entscheidungsregeln
+AP1,"Lösungsraum, Stand der Technik und Widerspruchstaxonomie","Grenzfälle, Positiv-/Negativbeispiele und Abgrenzungen konstruieren",16,Grenzfallkatalog
+AP1,"Lösungsraum, Stand der Technik und Widerspruchstaxonomie","Taxonomie v1, Forschungsfragen und Hypothesen konsolidieren",16,TAXONOMY_V1 / Research Design
+AP2,"Benchmarkmethodik, Testdatengenerator und Ground Truth",Benchmark-Datenschema und Provenienzfelder spezifizieren,24,Benchmark-Schema
+AP2,"Benchmarkmethodik, Testdatengenerator und Ground Truth",Architektur des synthetischen Testdatengenerators entwickeln,32,Generator-Design
+AP2,"Benchmarkmethodik, Testdatengenerator und Ground Truth",Generator für Basisdokumente und konfliktfreie Szenarien implementieren,40,Generator v1
+AP2,"Benchmarkmethodik, Testdatengenerator und Ground Truth",Generator für Fakt-/Wert- und Verantwortlichkeitskonflikte implementieren,32,Konfliktgenerator v1
+AP2,"Benchmarkmethodik, Testdatengenerator und Ground Truth",Generator für Zeit-/Status- und Versionsfälle implementieren,40,Temporal/Status Generator
+AP2,"Benchmarkmethodik, Testdatengenerator und Ground Truth",Generator für Abhängigkeits-/Schnittstellenfälle implementieren,32,Dependency Generator
+AP2,"Benchmarkmethodik, Testdatengenerator und Ground Truth","Schwierige Gegenbeispiele, Hard Negatives und Mehrdeutigkeiten erzeugen",32,Hard-Negative-Satz
+AP2,"Benchmarkmethodik, Testdatengenerator und Ground Truth",Ground-Truth- und Annotationsleitfaden entwickeln,24,Annotation Guide
+AP2,"Benchmarkmethodik, Testdatengenerator und Ground Truth",Train-/Validation-/Test-Split und Leakage-Schutz implementieren,20,Split-Manifest
+AP2,"Benchmarkmethodik, Testdatengenerator und Ground Truth","Benchmark-Pilot erzeugen, prüfen und Fehler des Generators korrigieren",24,Benchmark Pilot
+AP3,Baselines und Evaluationspipeline,"Reproduzierbare Evaluationspipeline, Konfigurationen und Metrikberechnung entwickeln",40,Evaluation Framework
+AP3,Baselines und Evaluationspipeline,B0 String-/Keyword-Referenz implementieren und testen,24,Baseline B0
+AP3,Baselines und Evaluationspipeline,B1 regelbasiertes Konsistenzverfahren implementieren und testen,48,Baseline B1
+AP3,Baselines und Evaluationspipeline,B2 Embedding-basierte Kandidatensuche/Klassifikation implementieren,48,Baseline B2
+AP3,Baselines und Evaluationspipeline,"B3 NLI-Baseline implementieren, Modelle vergleichen und Schwellenwerte validieren",64,Baseline B3
+AP3,Baselines und Evaluationspipeline,B4 direkte LLM-Klassifikation mit strukturiertem Output implementieren und testen,48,Baseline B4
+AP3,Baselines und Evaluationspipeline,"Gemeinsame Experimentkonfiguration, Logging und Rohresultatspeicherung härten",32,Experiment Infrastructure
+AP3,Baselines und Evaluationspipeline,Baseline-Experimentserien auf Development/Validation reproduzierbar ausführen,40,Baseline Results
+AP3,Baselines und Evaluationspipeline,False-Positive-/False-Negative-Analyse der Baselines durchführen,32,Baseline Error Analysis
+AP3,Baselines und Evaluationspipeline,Baselinevergleich konsolidieren und stärkste Referenzverfahren festlegen,24,Baseline Report
+AP4,"Entitäts-, Attribut-, Zeit-, Status- und Provenienzverarbeitung","Extraktionsschema für Entitäten, Attribute, Zeit, Status und Provenienz spezifizieren",24,Extraction Schema
+AP4,"Entitäts-, Attribut-, Zeit-, Status- und Provenienzverarbeitung",Entitätsextraktion für heterogene Dokumenttypen implementieren und testen,48,Entity Extraction
+AP4,"Entitäts-, Attribut-, Zeit-, Status- und Provenienzverarbeitung",Entity-Resolution-Verfahren entwickeln und Namens-/Aliasvarianten untersuchen,64,Entity Resolution
+AP4,"Entitäts-, Attribut-, Zeit-, Status- und Provenienzverarbeitung",Attribut- und Wertnormalisierung einschließlich numerischer Angaben entwickeln,40,Attribute Normalization
+AP4,"Entitäts-, Attribut-, Zeit-, Status- und Provenienzverarbeitung",Zeitangaben extrahieren und absolute/relative Zeitbezüge normalisieren,72,Temporal Normalization
+AP4,"Entitäts-, Attribut-, Zeit-, Status- und Provenienzverarbeitung",Statuszustände und zulässige Statusübergänge modellieren und extrahieren,56,Status Model
+AP4,"Entitäts-, Attribut-, Zeit-, Status- und Provenienzverarbeitung",Dokumentversion und Provenienz technisch erfassen und verknüpfen,32,Provenance Model
+AP4,"Entitäts-, Attribut-, Zeit-, Status- und Provenienzverarbeitung","Komponenten-Benchmarks für Entity-, Zeit- und Statusverarbeitung erstellen",28,Component Benchmarks
+AP4,"Entitäts-, Attribut-, Zeit-, Status- und Provenienzverarbeitung","Fehleranalyse für Matching-, Zeit- und Statusextraktion durchführen",32,Extraction Error Analysis
+AP4,"Entitäts-, Attribut-, Zeit-, Status- und Provenienzverarbeitung","Komponenten integrieren, Regressionstests ergänzen und Schnittstellen stabilisieren",24,Extraction Pipeline
+AP5,Evidenzgraph und Fusionsalgorithmen,"Evidenzgraph-Schema für Aussagen, Entitäten, Zeit, Status und Provenienz entwerfen",48,Evidence Graph Schema
+AP5,Evidenzgraph und Fusionsalgorithmen,Graphkonstruktion aus extrahierten Dokumentinformationen implementieren,64,Evidence Graph Builder
+AP5,Evidenzgraph und Fusionsalgorithmen,Graph- und strukturbezogene Kandidatensuche für potenzielle Konfliktpaare entwickeln,48,Candidate Retrieval
+AP5,Evidenzgraph und Fusionsalgorithmen,Symbolische Zeit-/Status-Konsistenzregeln auf dem Evidenzgraphen entwickeln,56,Consistency Rules
+AP5,Evidenzgraph und Fusionsalgorithmen,Semantische NLI-/LLM-Signale in die Evidenzrepräsentation integrieren,48,Semantic Evidence
+AP5,Evidenzgraph und Fusionsalgorithmen,Alternative Fusions- und Entscheidungslogiken entwickeln und implementieren,80,Fusion Variants
+AP5,Evidenzgraph und Fusionsalgorithmen,Mehrkanten- und Konfliktpfade analysieren und Fehlerfortpflanzung modellieren,40,Graph Reasoning
+AP5,Evidenzgraph und Fusionsalgorithmen,Hybridarchitekturen experimentell auf Development/Validation vergleichen,48,Hybrid Experiments
+AP5,Evidenzgraph und Fusionsalgorithmen,Architekturvergleich auswerten und Kandidaten für AP6 auswählen,28,Architecture Comparison
+AP6,"Kalibrierung, Ablation, Fehler- und Robustheitsanalysen",Konfidenz- und Evidenzkalibrierung für hybride Modellsignale entwickeln,72,Calibration
+AP6,"Kalibrierung, Ablation, Fehler- und Robustheitsanalysen",Entscheidungsschwellen bei kontrollierter False-Positive-Rate optimieren,40,Threshold Study
+AP6,"Kalibrierung, Ablation, Fehler- und Robustheitsanalysen","Ablationsstudien für Entity, Zeit, Status, Graph, NLI/LLM und Fusion durchführen",96,Ablation Results
+AP6,"Kalibrierung, Ablation, Fehler- und Robustheitsanalysen",Systematische False-Positive-/False-Negative- und Fehlertaxonomieanalyse durchführen,72,Error Analysis
+AP6,"Kalibrierung, Ablation, Fehler- und Robustheitsanalysen","Robustheit gegenüber Paraphrasen, Synonymen, Tippfehlern und Zusatzkontext testen",56,Robustness Text
+AP6,"Kalibrierung, Ablation, Fehler- und Robustheitsanalysen","Robustheit bei langen Dokumenten, Kontextmenge und Dokumentreihenfolge untersuchen",40,Robustness Context
+AP6,"Kalibrierung, Ablation, Fehler- und Robustheitsanalysen",Fehlerfortpflanzung über Graphkanten und mehrstufige Konfliktpfade untersuchen,40,Propagation Study
+AP6,"Kalibrierung, Ablation, Fehler- und Robustheitsanalysen",Alternative Fusionsarchitekturen bei identifizierten Schwächen entwickeln und testen,64,Alternative Fusion
+AP6,"Kalibrierung, Ablation, Fehler- und Robustheitsanalysen",Wichtige Experimente mit mehreren Seeds wiederholen und statistisch zusammenfassen,24,Repeated Runs
+AP6,"Kalibrierung, Ablation, Fehler- und Robustheitsanalysen",Finale Architektur und Evaluationskonfiguration für AP7 festlegen,16,Final Architecture Freeze
+AP7,Finale Validierung und technische Schlussauswertung,"Finales Evaluationsprotokoll, Testset-Hash und Auswertungsregeln einfrieren",16,Evaluation Protocol
+AP7,Finale Validierung und technische Schlussauswertung,Ausgewählte Architektur einmalig auf zurückgehaltenem Testset ausführen,40,Final Test Results
+AP7,Finale Validierung und technische Schlussauswertung,Finale Ergebnisse reproduzierbar gegen alle relevanten Baselines vergleichen,32,Final Baseline Comparison
+AP7,Finale Validierung und technische Schlussauswertung,"Ergebnisse nach Dokumenttyp, Widerspruchstyp und Schwierigkeitsgrad auswerten",40,Stratified Evaluation
+AP7,Finale Validierung und technische Schlussauswertung,Verbleibende technische Fehlermuster auf dem finalen Testset analysieren,40,Final Error Analysis
+AP7,Finale Validierung und technische Schlussauswertung,Kalibrierung und Robustheit der finalen Architektur abschließend bewerten,24,Final Robustness
+AP7,Finale Validierung und technische Schlussauswertung,Forschungsfragen und Hypothesen anhand der Messergebnisse beantworten,24,Research Findings
+AP7,Finale Validierung und technische Schlussauswertung,"Technische Grenzen, negative Ergebnisse und Folgeforschung dokumentieren",20,Limitations
+AP7,Finale Validierung und technische Schlussauswertung,Wissenschaftlich-technischen Abschlussbericht und Abschlussartefakte konsolidieren,24,Final Report

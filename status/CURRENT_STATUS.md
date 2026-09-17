@@ -1,13 +1,13 @@
 # HyConCheck – Aktueller Stand
 
 Stand: **17.09.2026**
-Branch: `work/master-prompt-alignment` (ausgehend von `main` @ `588584e`)
+Branch: `work/bl-090-forecast-integration` (ausgehend von `main` @ `4f34ca1`)
 Projektzeitraum: 01.09.2026 – 31.12.2027
 Maßgebliche Quelle: [docs/HYCONCHECK_MASTER_PROMPT.md](../docs/HYCONCHECK_MASTER_PROMPT.md)
 
 ## Gesamtstand
 
-In diesem Repository ist die Projektgrundlage eingerichtet (BL-000) und an den vollständigen Forschungsauftrag angeglichen (BL-000a, [ADR-0002](../docs/decisions/ADR-0002-master-prompt-als-massgebliche-quelle.md)). Das Repository ist ein vollständiger Neuaufbau ohne Übernahme früherer Dateien, Commits, Erledigungsstände oder Forschungsergebnisse ([ADR-0001](../docs/decisions/ADR-0001-neuaufbau-ohne-uebernahme.md)).
+In diesem Repository ist die Projektgrundlage eingerichtet (BL-000), an den vollständigen Forschungsauftrag angeglichen (BL-000a, [ADR-0002](../docs/decisions/ADR-0002-master-prompt-als-massgebliche-quelle.md)) und die Forecast-Quelle kontrolliert integriert (BL-090, [planning/forecast/](../planning/forecast/README.md)). Das Repository ist ein vollständiger Neuaufbau ohne Übernahme früherer Dateien, Commits, Erledigungsstände oder Forschungsergebnisse ([ADR-0001](../docs/decisions/ADR-0001-neuaufbau-ohne-uebernahme.md)).
 
 **In diesem Repository** liegen noch keine Rechercheergebnisse, Daten, Implementierungen oder Experimente vor. Fachlich zum Vorhaben gehörende Arbeiten, die seit September 2026 außerhalb dieses Repositorys stattgefunden haben, liegen im Projektzeitraum, werden hier aber nicht als durchgeführt oder abgeschlossen geführt.
 
@@ -23,7 +23,7 @@ In diesem Repository ist die Projektgrundlage eingerichtet (BL-000) und an den v
 | AP6 | Kalibrierung, Ablation, Fehler- und Robustheitsanalysen | 520 | offen |
 | AP7 | Validierung auf zurückgehaltenen Testdaten, Baselinevergleich | 260 | offen |
 
-Planstunden sind Planwerte des Forschungsantrags; Ist-Stunden werden hier nicht geführt.
+Planstunden sind Planwerte des Forschungsantrags. Es sind keine Ist-Stunden vorhanden; aus dem Forecast wird kein FuE-Erledigungsgrad abgeleitet. Der Status je AP wird ausschließlich nach dem tatsächlichen Forschungsstand (vorliegende, geprüfte Artefakte) geführt – unabhängig davon, dass der Forecast für AP1 bereits Termine vor dem heutigen Datum vorsieht.
 
 ## Stand je Meilenstein (§36)
 
@@ -68,13 +68,14 @@ Noch kein AP-Übergang; kein Gate geprüft.
 
 ## Forecast und Fortschrittskontrolle (§39.10)
 
-- Die Forecast-Quelle wurde bereitgestellt; ihre kontrollierte Prüfung und Integration erfolgt in einer separaten Etappe (BL-090). Im Repository liegen daher noch keine AP-Termine, keine Jahresverteilung je AP und keine Abschlussprognose vor.
-- Wöchentlicher Soll-Ist-Abgleich (BL-091) und monatliche Abschlussprognose (BL-092): eingerichtet als wiederkehrende Backlog-Einträge; erster Abgleich noch nicht erfolgt.
+- **Forecast-Quelle kontrolliert integriert (BL-090, 17.09.2026):** `HyConCheck_Zeitnachweis.xlsx` (Stand 16.09.2026, SHA-256 `b647994cde8ab4c992865dd8b1c2a8872801646786ff19fafc15952273acf48f`), Quelldatei unverändert außerhalb des Repositorys. Maschinenlesbare Artefakte in `planning/forecast/`; AP-Zeiträume und Jahresverteilung als „Forecast gemäß bereitgestellter Planungsquelle, keine Ist-Aussage“ in [Projektplan, Abschnitt 2a](../planning/PROJECT_PLAN_2026_2027.md).
+- Keine Ist-Stunden vorhanden; kein FuE-Erledigungsgrad aus dem Forecast abgeleitet; vergangene Forecast-Termine (AP1 ab 01.09.2026) bedeuten keine Erledigung.
+- Wöchentlicher Soll-Ist-Abgleich (BL-091) und monatliche Abschlussprognose (BL-092): wiederkehrende Backlog-Einträge; erster Abgleich noch nicht erfolgt.
 - Terminrisiken und Gegenmaßnahmen: [Projektplan, Abschnitt 7](../planning/PROJECT_PLAN_2026_2027.md).
 
 ## Offene Planungsgrundlagen
 
-- BL-090 Forecast-Integration (siehe oben).
+- keine (BL-090 abgeschlossen).
 
 ## Offene methodische Punkte
 
@@ -82,7 +83,7 @@ Noch kein AP-Übergang; kein Gate geprüft.
 
 ## Qualitätsprüfungen (letzter Lauf 17.09.2026)
 
-- `py tests/check_repo_conventions.py`: bestanden
+- `py tests/check_repo_conventions.py`: bestanden (inkl. Forecast-Prüfungen)
 - `git diff --check`: bestanden
 - `python -m pytest`, `ruff check .`: noch nicht anwendbar (kein ausführbarer Projektcode in `src/`), siehe [tests/README.md](../tests/README.md)
 

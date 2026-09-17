@@ -62,7 +62,7 @@ docs/                          Fachliche Grundlagendokumente
   TAXONOMY_V1.md               Widerspruchstaxonomie V1 (Rahmen; Operationalisierung offen)
   decisions/                   Entscheidungsprotokoll (ADR)
 experiments/                   Experimentregister und -protokolle (EXP-YYYY-NNNN) – noch leer
-planning/                      Projektplan, Backlog
+planning/                      Projektplan, Backlog, forecast/ (Forecast-Artefakte aus der Planungsquelle)
 references/                    Quellenregister – noch leer
 results/                       Rohresultate und Kennzahlen – noch leer
 src/                           Quellcode – noch leer
@@ -84,4 +84,4 @@ git diff --check
 
 ## Planstunden und Forecast
 
-Alle Stundenangaben sind Planwerte des Forschungsantrags. Daraus werden keine tatsächlich geleisteten Personenstunden abgeleitet; es werden keine Stundenzettel erzeugt. Die Forecast-Quelle wurde bereitgestellt; ihre kontrollierte Prüfung und Integration erfolgt in einer separaten Etappe (siehe [Projektplan](planning/PROJECT_PLAN_2026_2027.md), Abschnitt Forecast).
+Alle Stundenangaben sind Planwerte des Forschungsantrags. Daraus werden keine tatsächlich geleisteten Personenstunden abgeleitet; es werden keine Stundenzettel erzeugt. Die bereitgestellte Planungsquelle ist als Forecast integriert ([planning/forecast/](planning/forecast/README.md); Projektplan Abschnitt 2a): Forecast gemäß bereitgestellter Planungsquelle, keine Ist-Aussage – keine Ist-Stunden, keine Erledigungsgrade, vergangene Plantermine bedeuten keine Erledigung.

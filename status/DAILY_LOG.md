@@ -17,6 +17,18 @@ Pflichtfelder je Eintrag:
 
 ---
 
+## 2026-09-17 – Etappe 6: BL-090 – kontrollierte Forecast-Integration
+
+- **Arbeitspaket:** Planung/Einrichtung (kein Forschungs-AP)
+- **Fragestellung / Ziel:** Bereitgestellte Planungsquelle `HyConCheck_Zeitnachweis.xlsx` nach §39.7 ausschließlich als Forecast integrieren und maschinenlesbar bereitstellen.
+- **Tätigkeit (automatisiert, werkzeuggestützt, unter Anweisung des Projektverantwortlichen):** (1) Lesende Prüfung der Quelldatei (Standardbibliothek, ohne Schreibzugriff): Tabellenblätter `Tagesplanung` (386 Datenzeilen) und `Subaktivitäten` (66 Datenzeilen); keine Formeln, keine externen Verknüpfungen, keine Ist-Spalten; SHA-256 vor und nach der Integration `b647994cde8ab4c992865dd8b1c2a8872801646786ff19fafc15952273acf48f`, Quellstand 16.09.2026. (2) Erstellung der maschinenlesbaren Forecast-Artefakte per Skript ohne Namensspalte und ohne lokale Pfade. (3) Integration der geplanten AP-Zeiträume und der Jahresverteilung je AP als „Forecast gemäß bereitgestellter Planungsquelle, keine Ist-Aussage“ in den Projektplan; Meilensteintermine als Forecast; Terminrisiko zu Forecast-Tagen vor Repository-Einrichtung ergänzt. (4) Prüfskript um Forecast-Prüfungen erweitert; Backlog und Status aktualisiert.
+- **Artefakte:** `planning/forecast/README.md`, `planning/forecast/forecast_daily.csv` (386 Zeilen), `planning/forecast/forecast_subactivities.csv` (66 Zeilen), `planning/forecast/forecast_summary.csv` (20 Zeilen), `planning/forecast/build_forecast_csv.py`, `planning/PROJECT_PLAN_2026_2027.md` (Abschnitt 2a), `planning/BACKLOG.md`, `status/CURRENT_STATUS.md`, `status/DAILY_LOG.md`, `tests/check_repo_conventions.py`, `tests/README.md`
+- **Ergebnis und Prüfungen:** Forecast-Summen reproduziert: AP1 200, AP2 300, AP3 400, AP4 420, AP5 460, AP6 520, AP7 260; 2026 = 640, 2027 = 1.920; Gesamt 2.560 (identisch in beiden Tabellenblättern und mit §25). `py tests/check_repo_conventions.py` bestanden (inkl. Negativtests mit anschließender vollständiger Rücknahme); `git diff --check` bestanden; `python -m pytest` und `ruff check .` weiterhin nicht anwendbar (nicht installiert, kein Projektcode in `src/`; siehe `tests/README.md`). Quelldatei nicht verändert, nicht ins Repository kopiert.
+- **Interpretation:** Die Planungsquelle ist ein in sich konsistenter Planwert-Forecast. 37 Tage mit zwei Halbtagszeilen und die Kennung „(geplante Etappe n/m)“ sind Darstellungsdetails; 29 Puffer-/Feiertagszeilen sind Kapazitätsplatzhalter mit 0 h.
+- **Einschränkungen und Fehlschläge:** Ausdrücklich keine Ist-Stunden, keine Fortschritts- oder Erledigungsableitung: Der Forecast sieht für 01.–16.09.2026 88 Planstunden AP1 vor; dafür liegt in diesem Repository kein Artefakt vor, und diese Termine gelten nicht als erledigt. Der fachliche Stand aller AP bleibt „offen“.
+- **Entscheidung / nächster Schritt:** BL-090 abgeschlossen (nur die Repository-Etappe „Forecast integrieren“; kein FuE-AP und keine Forecast-Tätigkeit ist damit abgeschlossen). Nächste fachliche Etappe: BL-001 – Rechercheprotokoll und Suchstrategie (AP1).
+- **Commit-/PR-Referenz:** Branch `work/bl-090-forecast-integration` (Basis `main` @ `4f34ca1`), Commit „Forecast-Planung kontrolliert integrieren“ (SHA in der Git-Historie); PR noch nicht erstellt.
+
 ## 2026-09-17 – Etappe 5: Angleichung der Projektgrundlage an den vollständigen Master-Prompt (BL-000a)
 
 - **Arbeitspaket:** Einrichtung (kein Forschungs-AP)
