@@ -21,6 +21,11 @@ Prüft gegen den verbindlichen Master-Prompt (docs/HYCONCHECK_MASTER_PROMPT.md):
     Summary-Ebene); Tagessumme je Datum 0 oder 8; Nicht-AP-Zeilen 0 Stunden;
     AP-Titel je AP eindeutig und blattuebergreifend konsistent; README nennt den
     verifizierten SHA-256 und den Hinweis "keine Ist-Aussage" (§25, §39.7).
+11. Rechercheprotokoll (references/RESEARCH_PROTOCOL.md): 16 Themencluster, Suchsysteme,
+    Primaer-/Ergaenzungsstrings, Ein-/Ausschlusskriterien, Screening, Provenienz- und
+    Extraktionsfelder, Research-Gap-Bias-Schutz, Stop-/Saettigungskriterium; Vorlagen
+    (Suchprotokoll, Quellenregister, Matrix) ohne unbelegte Eintraege; BL-001 nur
+    abgeschlossen, wenn das Protokoll vollstaendig ist (§34, §39.5).
 
 Aufruf: py tests/check_repo_conventions.py
 Exit-Code 0 bei Erfolg, 1 bei mindestens einem Befund.
@@ -60,6 +65,10 @@ REQUIRED_FILES = [
     "planning/forecast/forecast_daily.csv",
     "planning/forecast/forecast_subactivities.csv",
     "planning/forecast/forecast_summary.csv",
+    "references/RESEARCH_PROTOCOL.md",
+    "references/LITERATURE_SEARCH_LOG.md",
+    "references/SOURCES.md",
+    "references/LITERATURE_MATRIX.csv",
 ]
 
 REQUIRED_DIRS = [
@@ -132,6 +141,49 @@ FORECAST_DAILY_FIELDS = [
 FORECAST_SUB_FIELDS = ["work_package", "ap_title", "subactivity", "planned_hours", "planned_artifact"]
 FORECAST_SUMMARY_FIELDS = ["scope", "work_package", "year", "planned_hours"]
 FORECAST_NO_ACTUALS_HINT = "keine Ist-Aussage"
+
+PROTOCOL = ROOT / "references/RESEARCH_PROTOCOL.md"
+SEARCH_LOG = ROOT / "references/LITERATURE_SEARCH_LOG.md"
+SOURCES = ROOT / "references/SOURCES.md"
+MATRIX = ROOT / "references/LITERATURE_MATRIX.csv"
+PROTOCOL_CLUSTERS = [
+    "Contradiction Detection", "Natural Language Inference", "Document-level NLI",
+    "Cross-document Contradiction Detection", "Semantic Consistency Checking", "Entity Resolution",
+    "Temporal Reasoning", "Temporal Knowledge Graphs", "Status / State Transition Modeling",
+    "Fact Verification", "Evidence Graphs", "Knowledge Graph Reasoning", "Neuro-symbolic AI",
+    "Uncertainty Calibration", "Evidence Fusion", "Contradiction Benchmarks",
+]
+PROTOCOL_SECTIONS = {
+    "Suchsysteme": r"^## \d+\. Recherchequellen / Suchsysteme",
+    "Suchstrings": r"^## \d+\. Suchstrings",
+    "Ein-/Ausschlusskriterien": r"^## \d+\. Ein- und Ausschlusskriterien",
+    "Screening": r"^## \d+\. Screening-Prozess",
+    "Provenienz": r"^## \d+\. Provenienzschema",
+    "Extraktion": r"^## \d+\. Extraktionsschema",
+    "Bias-Schutz": r"^## \d+\. Research-Gap-Regel",
+    "Stopkriterium": r"^## \d+\. Stop-/Sättigungskriterium",
+    "Snowballing": r"^## \d+\. Snowballing",
+    "Reproduzierbarkeit": r"^## \d+\. Reproduzierbarkeit der Suchläufe",
+}
+PROTOCOL_SYSTEMS = [
+    "Google Scholar", "Semantic Scholar", "DBLP", "ACL Anthology", "arXiv",
+    "IEEE Xplore", "ACM Digital Library", "SpringerLink", "ScienceDirect",
+]
+PROTOCOL_PROVENANCE_FIELDS = [
+    "source_id", "title", "authors", "year", "venue", "doi", "url", "source_type",
+    "peer_review_status", "search_system", "search_string", "retrieved_on", "screening_status",
+    "decision", "decision_criteria", "justification", "clusters",
+]
+PROTOCOL_EXTRACTION_FIELDS = [
+    "research_problem", "method", "dataset_benchmark", "document_type", "contradiction_definition",
+    "contradiction_types", "entity_resolution", "temporal_modeling", "status_modeling", "provenance",
+    "graph_representation", "semantic_model", "fusion_method", "uncertainty_handling", "baselines",
+    "evaluation_metrics", "key_results", "limitations", "relevance_hyconcheck", "relation_F",
+    "relation_H", "open_gap",
+]
+PROTOCOL_BIAS_PHRASES = [
+    "widerlegende Evidenz", "vorwegnehmen", "Negative Evidenz", "Keine selektive Aufnahme",
+]
 FORECAST_SENTENCE = (
     "Die Forecast-Quelle wurde bereitgestellt; ihre kontrollierte Prüfung und "
     "Integration erfolgt in einer separaten Etappe"
@@ -508,6 +560,77 @@ def check_forecast_rule(forecast_findings: list[str]) -> None:
                 report("Backlog: Forecast-Artefakte vollständig und konsistent, BL-090 aber nicht als abgeschlossen geführt")
 
 
+def check_research_protocol() -> list[str]:
+    """Prüft das Rechercheprotokoll (BL-001) und die Konsistenz der Recherche-Vorlagen."""
+    local: list[str] = []
+
+    def rep(msg: str) -> None:
+        local.append(msg)
+        report(msg)
+
+    if not PROTOCOL.is_file():
+        rep("Rechercheprotokoll: references/RESEARCH_PROTOCOL.md fehlt")
+        return local
+    text = read(PROTOCOL)
+    for cluster in PROTOCOL_CLUSTERS:
+        if cluster not in text:
+            rep(f"Rechercheprotokoll: Themencluster '{cluster}' fehlt")
+    for label, pattern in PROTOCOL_SECTIONS.items():
+        if not re.search(pattern, text, flags=re.M):
+            rep(f"Rechercheprotokoll: Abschnitt '{label}' fehlt")
+    for system in PROTOCOL_SYSTEMS:
+        if system not in text:
+            rep(f"Rechercheprotokoll: Suchsystem '{system}' nicht dokumentiert")
+    primary = set(re.findall(r"^\| (PS-[A-P]) \|", text, flags=re.M))
+    supplementary = set(re.findall(r"^\| (ES-\d{2}) \|", text, flags=re.M))
+    if len(primary) != 16:
+        rep(f"Rechercheprotokoll: {len(primary)} Primärstrings gefunden, erwartet 16 (PS-A … PS-P)")
+    if len(supplementary) < 10:
+        rep(f"Rechercheprotokoll: nur {len(supplementary)} ergänzende Suchstrings gefunden")
+    if not re.search(r"^\| IN-1 \|", text, flags=re.M) or not re.search(r"^\| EX-1 \|", text, flags=re.M):
+        rep("Rechercheprotokoll: Ein-/Ausschlusskriterien (IN-/EX-IDs) fehlen")
+    for field in PROTOCOL_PROVENANCE_FIELDS:
+        if f"`{field}`" not in text:
+            rep(f"Rechercheprotokoll: Provenienzfeld '{field}' fehlt")
+    for field in PROTOCOL_EXTRACTION_FIELDS:
+        if f"`{field}`" not in text:
+            rep(f"Rechercheprotokoll: Extraktionsfeld '{field}' fehlt")
+    for phrase in PROTOCOL_BIAS_PHRASES:
+        if phrase not in text:
+            rep(f"Rechercheprotokoll: Bias-Schutz-Formulierung '{phrase}' fehlt")
+
+    # Recherche-Vorlagen: keine unbelegten Literaturdaten
+    if MATRIX.is_file() and SOURCES.is_file():
+        m_fields, matrix = read_csv(MATRIX)
+        missing = [f for f in PROTOCOL_EXTRACTION_FIELDS if f not in m_fields]
+        if missing:
+            rep(f"Rechercheprotokoll: LITERATURE_MATRIX.csv ohne Felder {missing}")
+        source_ids = set(re.findall(r"^\| (SRC-\d{4}) \|", read(SOURCES), flags=re.M))
+        for row in matrix:
+            if row.get("source_id") not in source_ids:
+                rep(f"Rechercheprotokoll: Matrixzeile {row.get('source_id')} ohne Eintrag im Quellenregister")
+        for sid in source_ids:
+            if not re.fullmatch(r"SRC-\d{4}", sid):
+                rep(f"Rechercheprotokoll: ungültige Source-ID {sid}")
+    for path in (MATRIX, SOURCES, SEARCH_LOG):
+        if not path.is_file():
+            rep(f"Rechercheprotokoll: Vorlage {path.relative_to(ROOT).as_posix()} fehlt")
+    return local
+
+
+def check_research_protocol_status(protocol_findings: list[str]) -> None:
+    if not BACKLOG.is_file():
+        return
+    defined = PROTOCOL.is_file() and not protocol_findings
+    for line in read(BACKLOG).splitlines():
+        if not line.startswith("| BL-001"):
+            continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        status = cells[2].lower() if len(cells) > 2 else ""
+        if status.startswith("abgeschlossen") and not defined:
+            report("Backlog: BL-001 als abgeschlossen geführt, aber Rechercheprotokoll fehlt oder ist unvollständig")
+
+
 def main() -> int:
     files = tracked_text_files()
     check_required()
@@ -523,6 +646,8 @@ def main() -> int:
     check_hypothesis_status()
     forecast_findings = check_forecast()
     check_forecast_rule(forecast_findings)
+    protocol_findings = check_research_protocol()
+    check_research_protocol_status(protocol_findings)
 
     if findings:
         print("Befunde:")
