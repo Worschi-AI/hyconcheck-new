@@ -12,8 +12,15 @@ Prüft gegen den verbindlichen Master-Prompt (docs/HYCONCHECK_MASTER_PROMPT.md):
 7. Kein Taxonomie-Obertyp ist als abgeschlossen markiert (§9, §39.6).
 8. Keine Hypothese ist ohne Experimentregister als bestätigt/widerlegt geführt (§8, §23).
 9. Forecast-Regel: Statusdokumente behaupten nicht, der Zeitnachweis fehle; die
-   Forecast-Integration (BL-090) gilt nicht als abgeschlossen, solange keine
-   Forecast-Artefakte vorliegen (§39.7, §39.8).
+   Forecast-Integration (BL-090) gilt nur als abgeschlossen, wenn alle
+   Forecast-Artefakte vorliegen und konsistent sind (§39.7, §39.8).
+10. Forecast-Artefakte (planning/forecast/): README, forecast_daily.csv (386 Zeilen),
+    forecast_subactivities.csv (66 Zeilen), forecast_summary.csv vorhanden; keine
+    Namensspalte, keine lokalen Pfade; AP-Summen 200/300/400/420/460/520/260,
+    2026 = 640, 2027 = 1920, Gesamt = 2560 (Tages-, Subaktivitaets- und
+    Summary-Ebene); Tagessumme je Datum 0 oder 8; Nicht-AP-Zeilen 0 Stunden;
+    AP-Titel je AP eindeutig und blattuebergreifend konsistent; README nennt den
+    verifizierten SHA-256 und den Hinweis "keine Ist-Aussage" (§25, §39.7).
 
 Aufruf: py tests/check_repo_conventions.py
 Exit-Code 0 bei Erfolg, 1 bei mindestens einem Befund.
@@ -21,6 +28,7 @@ Exit-Code 0 bei Erfolg, 1 bei mindestens einem Befund.
 
 from __future__ import annotations
 
+import csv
 import re
 import subprocess
 import sys
@@ -48,6 +56,10 @@ REQUIRED_FILES = [
     "docs/decisions/ADR-0000-vorlage.md",
     "docs/decisions/ADR-0001-neuaufbau-ohne-uebernahme.md",
     "docs/decisions/ADR-0002-master-prompt-als-massgebliche-quelle.md",
+    "planning/forecast/README.md",
+    "planning/forecast/forecast_daily.csv",
+    "planning/forecast/forecast_subactivities.csv",
+    "planning/forecast/forecast_summary.csv",
 ]
 
 REQUIRED_DIRS = [
@@ -105,6 +117,21 @@ CURRENT_STATE_DOCS = [
     "planning/BACKLOG.md",
     "status/CURRENT_STATUS.md",
 ]
+FORECAST_DIR = ROOT / "planning/forecast"
+FORECAST_README = FORECAST_DIR / "README.md"
+FORECAST_DAILY = FORECAST_DIR / "forecast_daily.csv"
+FORECAST_SUB = FORECAST_DIR / "forecast_subactivities.csv"
+FORECAST_SUMMARY = FORECAST_DIR / "forecast_summary.csv"
+FORECAST_SOURCE_SHA256 = "b647994cde8ab4c992865dd8b1c2a8872801646786ff19fafc15952273acf48f"
+FORECAST_DAILY_ROWS = 386
+FORECAST_SUB_ROWS = 66
+FORECAST_DAILY_FIELDS = [
+    "date", "weekday", "iso_week", "year", "month", "work_package", "ap_title",
+    "planned_activity_raw", "subactivity", "planned_artifact", "planned_hours", "category",
+]
+FORECAST_SUB_FIELDS = ["work_package", "ap_title", "subactivity", "planned_hours", "planned_artifact"]
+FORECAST_SUMMARY_FIELDS = ["scope", "work_package", "year", "planned_hours"]
+FORECAST_NO_ACTUALS_HINT = "keine Ist-Aussage"
 FORECAST_SENTENCE = (
     "Die Forecast-Quelle wurde bereitgestellt; ihre kontrollierte Prüfung und "
     "Integration erfolgt in einer separaten Etappe"
@@ -320,7 +347,141 @@ def check_hypothesis_status() -> None:
                 report(f"Forschungsdesign: Hypothese ohne Experimentregister als bewertet geführt: {line.strip()}")
 
 
-def check_forecast_rule() -> None:
+def read_csv(path: Path) -> tuple[list[str], list[dict[str, str]]]:
+    with path.open("r", encoding="utf-8", newline="") as fh:
+        reader = csv.DictReader(fh)
+        return list(reader.fieldnames or []), list(reader)
+
+
+def check_forecast() -> list[str]:
+    """Prüft die Forecast-Artefakte (§39.7); gibt die Forecast-Befunde zusätzlich zurück."""
+    local: list[str] = []
+
+    def rep(msg: str) -> None:
+        local.append(msg)
+        report(msg)
+
+    for path in (FORECAST_README, FORECAST_DAILY, FORECAST_SUB, FORECAST_SUMMARY):
+        if not path.is_file():
+            rep(f"Forecast: {path.relative_to(ROOT).as_posix()} fehlt")
+    if local:
+        return local
+
+    d_fields, daily = read_csv(FORECAST_DAILY)
+    s_fields, subs = read_csv(FORECAST_SUB)
+    m_fields, summary = read_csv(FORECAST_SUMMARY)
+    for name, fields, expected in (
+        ("forecast_daily.csv", d_fields, FORECAST_DAILY_FIELDS),
+        ("forecast_subactivities.csv", s_fields, FORECAST_SUB_FIELDS),
+        ("forecast_summary.csv", m_fields, FORECAST_SUMMARY_FIELDS),
+    ):
+        missing = [f for f in expected if f not in fields]
+        if missing:
+            rep(f"Forecast: {name} ohne Pflichtfelder {missing}")
+        personal = [f for f in fields if re.match(r"(name|person|mitarbeiter|bearbeiter)", f, flags=re.I)]
+        if personal:
+            rep(f"Forecast: {name} enthält personenbezogene Spalte {personal}")
+    for path in (FORECAST_DAILY, FORECAST_SUB, FORECAST_SUMMARY, FORECAST_README):
+        if re.search(r"[A-Za-z]:\\|[A-Za-z]:/|/Users/|\\Users\\", read(path)):
+            rep(f"Forecast: {path.name} enthält einen lokalen Dateipfad")
+    if len(daily) != FORECAST_DAILY_ROWS:
+        rep(f"Forecast: forecast_daily.csv hat {len(daily)} Datenzeilen, erwartet {FORECAST_DAILY_ROWS}")
+    if len(subs) != FORECAST_SUB_ROWS:
+        rep(f"Forecast: forecast_subactivities.csv hat {len(subs)} Datenzeilen, erwartet {FORECAST_SUB_ROWS}")
+    if local:
+        return local
+
+    ap_daily: dict[str, int] = {ap: 0 for ap in PLANNED_HOURS}
+    year_daily: dict[str, int] = {}
+    ap_year: dict[tuple[str, str], int] = {}
+    per_date: dict[str, int] = {}
+    titles_daily: dict[str, set[str]] = {}
+    stage_re = re.compile(r"\s*\(geplante Etappe \d+/\d+\)\s*$")
+    for i, row in enumerate(daily, start=2):
+        try:
+            hours = int(row["planned_hours"])
+        except ValueError:
+            rep(f"Forecast: forecast_daily.csv:{i} planned_hours nicht numerisch")
+            continue
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", row["date"]):
+            rep(f"Forecast: forecast_daily.csv:{i} Datum nicht ISO: {row['date']}")
+        cat, ap = row["category"], row["work_package"]
+        if cat not in ("AP", "BUFFER", "HOLIDAY"):
+            rep(f"Forecast: forecast_daily.csv:{i} unzulässige category {cat}")
+        per_date[row["date"]] = per_date.get(row["date"], 0) + hours
+        if cat == "AP":
+            if ap not in PLANNED_HOURS:
+                rep(f"Forecast: forecast_daily.csv:{i} AP-Zeile ohne gültiges Arbeitspaket ({ap})")
+                continue
+            ap_daily[ap] += hours
+            year_daily[row["year"]] = year_daily.get(row["year"], 0) + hours
+            ap_year[(ap, row["year"])] = ap_year.get((ap, row["year"]), 0) + hours
+            titles_daily.setdefault(ap, set()).add(row["ap_title"])
+            if stage_re.sub("", row["planned_activity_raw"]) != row["subactivity"]:
+                rep(f"Forecast: forecast_daily.csv:{i} subactivity ≠ planned_activity_raw ohne Etappenkennung")
+        else:
+            if hours != 0:
+                rep(f"Forecast: forecast_daily.csv:{i} Nicht-AP-Zeile mit {hours} Stunden")
+            if ap:
+                rep(f"Forecast: forecast_daily.csv:{i} Nicht-AP-Zeile mit Arbeitspaket {ap}")
+    bad_days = sorted(d for d, h in per_date.items() if h not in (0, 8))
+    if bad_days:
+        rep(f"Forecast: Tagessumme ≠ 0/8 an {len(bad_days)} Tagen, z. B. {bad_days[:5]}")
+    for ap, expected in PLANNED_HOURS.items():
+        if ap_daily.get(ap) != expected:
+            rep(f"Forecast: Tagesplanung {ap} = {ap_daily.get(ap)}, erwartet {expected}")
+    for year, expected in PLANNED_YEARS.items():
+        if year_daily.get(year) != expected:
+            rep(f"Forecast: Tagesplanung Jahr {year} = {year_daily.get(year)}, erwartet {expected}")
+    if sum(ap_daily.values()) != PLANNED_TOTAL:
+        rep(f"Forecast: Tagesplanung Gesamt = {sum(ap_daily.values())}, erwartet {PLANNED_TOTAL}")
+    for ap, titles in titles_daily.items():
+        if len(titles) != 1:
+            rep(f"Forecast: {ap} hat mehrere AP-Titel in forecast_daily.csv: {sorted(titles)}")
+
+    ap_sub: dict[str, int] = {}
+    titles_sub: dict[str, set[str]] = {}
+    sub_keys: set[tuple[str, str]] = set()
+    for i, row in enumerate(subs, start=2):
+        ap = row["work_package"]
+        if ap not in PLANNED_HOURS:
+            rep(f"Forecast: forecast_subactivities.csv:{i} ungültiges Arbeitspaket {ap}")
+            continue
+        try:
+            ap_sub[ap] = ap_sub.get(ap, 0) + int(row["planned_hours"])
+        except ValueError:
+            rep(f"Forecast: forecast_subactivities.csv:{i} planned_hours nicht numerisch")
+        titles_sub.setdefault(ap, set()).add(row["ap_title"])
+        sub_keys.add((ap, row["subactivity"]))
+    for ap, expected in PLANNED_HOURS.items():
+        if ap_sub.get(ap) != expected:
+            rep(f"Forecast: Subaktivitäten {ap} = {ap_sub.get(ap)}, erwartet {expected}")
+        if titles_sub.get(ap) and titles_daily.get(ap) and titles_sub[ap] != titles_daily[ap]:
+            rep(f"Forecast: AP-Titel von {ap} in Tagesplanung und Subaktivitäten verschieden")
+    daily_keys = {(r["work_package"], r["subactivity"]) for r in daily if r["category"] == "AP"}
+    if daily_keys - sub_keys:
+        rep(f"Forecast: Tagesplanungs-Subaktivitäten ohne Eintrag in Subaktivitäten: {sorted(daily_keys - sub_keys)[:3]}")
+    if sub_keys - daily_keys:
+        rep(f"Forecast: Subaktivitäten ohne Tagesplanungszeile: {sorted(sub_keys - daily_keys)[:3]}")
+
+    summ = {(r["scope"], r["work_package"], r["year"]): r["planned_hours"] for r in summary}
+    expected_summary: dict[tuple[str, str, str], int] = {("total", "ALL", "ALL"): PLANNED_TOTAL}
+    expected_summary.update({("work_package", ap, "ALL"): h for ap, h in PLANNED_HOURS.items()})
+    expected_summary.update({("year", "ALL", y): h for y, h in PLANNED_YEARS.items()})
+    expected_summary.update({("work_package_year", ap, y): h for (ap, y), h in ap_year.items()})
+    for key, expected in expected_summary.items():
+        if summ.get(key) != str(expected):
+            rep(f"Forecast: forecast_summary.csv {key} = {summ.get(key)}, erwartet {expected}")
+
+    readme = read(FORECAST_README)
+    if FORECAST_SOURCE_SHA256 not in readme:
+        rep("Forecast: README nennt nicht den verifizierten SHA-256 der Quelle")
+    if FORECAST_NO_ACTUALS_HINT not in readme or "Ist-Stunden" not in readme:
+        rep("Forecast: README ohne Hinweis, dass der Forecast keine Ist-Aussage ist")
+    return local
+
+
+def check_forecast_rule(forecast_findings: list[str]) -> None:
     missing_re = re.compile(r"Zeitnachweis[^\n]{0,80}(nicht vor|nicht vorhanden|fehlt)", flags=re.I)
     for rel in CURRENT_STATE_DOCS:
         path = ROOT / rel
@@ -329,14 +490,22 @@ def check_forecast_rule() -> None:
         for lineno, line in enumerate(read(path).splitlines(), start=1):
             if missing_re.search(line):
                 report(f"{rel}:{lineno}: behauptet fehlenden Zeitnachweis; Forecast-Quelle ist bereitgestellt")
-    for doc in (PLAN, STATUS):
-        if doc.is_file() and FORECAST_SENTENCE not in norm(read(doc)):
-            report(f"{doc.relative_to(ROOT).as_posix()}: Forecast-Hinweis fehlt")
+    integrated = FORECAST_DIR.is_dir() and not forecast_findings
+    if not integrated:
+        for doc in (PLAN, STATUS):
+            if doc.is_file() and FORECAST_SENTENCE not in norm(read(doc)):
+                report(f"{doc.relative_to(ROOT).as_posix()}: Forecast-Hinweis fehlt (Forecast nicht integriert)")
     if BACKLOG.is_file():
-        forecast_dir = ROOT / "planning/forecast"
         for line in read(BACKLOG).splitlines():
-            if line.startswith("| BL-090") and "abgeschlossen" in line and not forecast_dir.is_dir():
-                report("Backlog: BL-090 als abgeschlossen geführt, aber planning/forecast/ fehlt")
+            if not line.startswith("| BL-090"):
+                continue
+            cells = [c.strip() for c in line.strip().strip("|").split("|")]
+            status = cells[2].lower() if len(cells) > 2 else ""
+            done = status.startswith("abgeschlossen")
+            if done and not integrated:
+                report("Backlog: BL-090 als abgeschlossen geführt, aber Forecast-Artefakte fehlen oder sind inkonsistent")
+            if not done and integrated:
+                report("Backlog: Forecast-Artefakte vollständig und konsistent, BL-090 aber nicht als abgeschlossen geführt")
 
 
 def main() -> int:
@@ -352,7 +521,8 @@ def main() -> int:
     check_planned_hours()
     check_taxonomy_status()
     check_hypothesis_status()
-    check_forecast_rule()
+    forecast_findings = check_forecast()
+    check_forecast_rule(forecast_findings)
 
     if findings:
         print("Befunde:")

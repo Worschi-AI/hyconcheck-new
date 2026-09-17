@@ -104,6 +104,6 @@ Statuswerte: `offen`, `in Arbeit`, `blockiert`, `abgeschlossen`. Ein Eintrag wir
 
 | ID | Titel | Status | Artefakt |
 |---|---|---|---|
-| BL-090 | Forecast-Quelle kontrolliert prüfen und integrieren (§39.7): Tabellenblätter Tagesplanung und Subaktivitäten prüfen, Quelldatei unverändert aufbewahren, Angaben ausschließlich als Forecast integrieren, maschinenlesbare Planungsübersicht erstellen; danach Prüfskript anpassen | offen | `planning/forecast/`, Projektplan |
-| BL-091 | Wöchentlicher Soll-Ist-Abgleich der geplanten Artefakte und Arbeitspakettermine (wiederkehrend, §39.10) | offen | Projektplan Abschnitt 6/7, `status/CURRENT_STATUS.md` |
+| BL-090 | Forecast-Quelle kontrolliert prüfen und integrieren (§39.7): Tabellenblätter Tagesplanung und Subaktivitäten prüfen, Quelldatei unverändert aufbewahren, Angaben ausschließlich als Forecast integrieren, maschinenlesbare Planungsübersicht erstellen; danach Prüfskript anpassen | abgeschlossen (17.09.2026) | `planning/forecast/README.md`, `forecast_daily.csv`, `forecast_subactivities.csv`, `forecast_summary.csv`, `build_forecast_csv.py`; Projektplan Abschnitt 2a; Prüfskript erweitert. Abgeschlossen ist ausschließlich die Repository-Etappe „Forecast integrieren“ – kein FuE-Arbeitspaket und keine geplante Forecast-Tätigkeit gilt damit als abgeschlossen. |
+| BL-091 | Wöchentlicher Soll-Ist-Abgleich der geplanten Artefakte und Arbeitspakettermine gegen den Forecast (wiederkehrend, §39.10; „Ist“ = vorliegende Artefakte, keine Stunden) | offen – erster Abgleich ausstehend | Projektplan Abschnitt 6/7, `status/CURRENT_STATUS.md` |
 | BL-092 | Monatliche Aktualisierung der Abschlussprognose (wiederkehrend, §39.10) | offen | Projektplan, `status/CURRENT_STATUS.md` |
