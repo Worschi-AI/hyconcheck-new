@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Etappe | BL-001 (AP1) |
-| Version | 1.0 |
+| Version | 1.1 |
 | Stand | 17.09.2026 |
 | Status | verbindlich für die nachfolgende Literaturrecherche (BL-002) |
 | Grundlage | Master-Prompt §4, §6–§8, §23, §34, §39.5 ([docs/HYCONCHECK_MASTER_PROMPT.md](../docs/HYCONCHECK_MASTER_PROMPT.md)); [docs/RESEARCH_DESIGN.md](../docs/RESEARCH_DESIGN.md) |
@@ -228,6 +228,8 @@ Ausschlüsse mit EX-7 werden gesondert gelistet, damit sie bei späterer Verfüg
 
 Regeln: Eine Stufe darf nicht übersprungen werden. Bei Unsicherheit wird `weiter` gewählt (konservatives Screening). Alle Entscheidungen der Stufen 2–4 werden mit Datum protokolliert. Ausschlüsse auf Volltextebene (Stufe 3) werden immer mit Kriterium und Begründung dokumentiert.
 
+**Eingeschränkte Aufnahme `abstract-only` (ergänzt in Version 1.1):** Ist der Volltext einer fachlich relevanten Quelle nicht zugänglich (Paywall, gesperrter Abruf), der Abstract bzw. die Original-Metadaten reichen aber für IN-3/IN-4 aus, darf die Quelle mit `screening_status = abstract-only` aufgenommen werden. Das ist eine **transparente eingeschränkte Aufnahme und keine Volltextprüfung** (Stufe 3): die Quelle ist bibliografisch verifiziert und ihr Abstract geprüft, der Volltext nicht. Folgen: Extraktionsfelder, die der Abstract nicht trägt, erhalten `unklar (Abstract-Basis)`; Qualitätskriterien Transparenz/Reproduzierbarkeit/Evaluationsqualität erhalten `nicht bewertet (Abstract-Basis)`; die Quelle trägt keine Kernaussage der Auswertung allein; die Volltext-Nachbeschaffung wird im Backlog vorgemerkt (BL-002.5), danach wird der Status auf `included` oder `ausschluss` gesetzt. Reicht der Abstract für IN-3/IN-4 nicht aus, gilt weiterhin EX-7.
+
 ## 11. Dublettenbehandlung
 
 - **Bevorzugter Identifikator:** DOI. Ohne DOI: normalisierter Titel (Kleinschreibung, ohne Satzzeichen) + Nachname des Erstautors + Jahr; zusätzlich arXiv-ID oder ACL-Anthology-ID, falls vorhanden.
@@ -253,7 +255,7 @@ Jede tatsächlich geprüfte Quelle (ab Screening-Stufe 2) erhält im Register mi
 | `search_system` | Suchsystem(e) S1–S9 oder `snowballing-backward` / `snowballing-forward` mit Ausgangs-Source-ID |
 | `search_string` | ID(s) der verwendeten Suchstrings |
 | `retrieved_on` | Recherche-/Abrufdatum (ISO) |
-| `screening_status` | `title` / `abstract` / `fulltext` / `included` |
+| `screening_status` | `title` / `abstract` / `fulltext` / `included` / `abstract-only` (eingeschränkte Aufnahme ohne Volltextprüfung, siehe Abschnitt 10) |
 | `decision` | `aufnahme` / `ausschluss` |
 | `decision_criteria` | IN-/EX-Kriterien-IDs |
 | `justification` | Begründung (Pflicht ab Stufe 3) |
@@ -418,3 +420,4 @@ BL-001 bedeutet **nicht**: Literaturrecherche abgeschlossen · Stand der Technik
 | Datum | Version | Änderung |
 |---|---|---|
 | 17.09.2026 | 1.0 | Erstfassung (BL-001) |
+| 17.09.2026 | 1.1 | Statuswert `abstract-only` für transparente eingeschränkte Aufnahme ohne Volltextprüfung ergänzt (Abschnitte 10, 12); Anlass: Qualitäts-Audit BL-002.1 |

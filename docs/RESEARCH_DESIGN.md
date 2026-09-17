@@ -164,7 +164,7 @@ Zentrale Ergebnisse müssen aus Git-Commit, Dataset-Version, Konfiguration, Mode
 
 Recherchethemen: contradiction detection, Natural Language Inference, document-level NLI, cross-document contradiction detection, semantic consistency checking, entity resolution, temporal reasoning, temporal knowledge graphs, status/state transition modeling, fact verification, evidence graphs, knowledge graph reasoning, neuro-symbolic AI, uncertainty calibration, evidence fusion, contradiction benchmarks.
 
-Quellenpriorität: 1. peer-reviewed Literatur, 2. etablierte Benchmarks, 3. hochwertige Preprints, 4. offizielle technische Dokumentation, 5. nachvollziehbare Open-Source-Implementierungen. Quellen werden mit vollständiger Provenienz gespeichert; keine Quelle wird behauptet, die nicht tatsächlich geprüft wurde. Rechercheprotokoll und Suchstrategie: [references/RESEARCH_PROTOCOL.md](../references/RESEARCH_PROTOCOL.md) (BL-001, V1.0); Durchführung der Recherche: BL-002 (offen).
+Quellenpriorität: 1. peer-reviewed Literatur, 2. etablierte Benchmarks, 3. hochwertige Preprints, 4. offizielle technische Dokumentation, 5. nachvollziehbare Open-Source-Implementierungen. Quellen werden mit vollständiger Provenienz gespeichert; keine Quelle wird behauptet, die nicht tatsächlich geprüft wurde. Rechercheprotokoll und Suchstrategie: [references/RESEARCH_PROTOCOL.md](../references/RESEARCH_PROTOCOL.md) (BL-001, V1.0); Durchführung der Recherche: BL-002 (in Arbeit; Tranche BL-002.1 Cluster A–E abgeschlossen, Zwischenauswertung in `references/reviews/`; Cluster F–P offen).
 
 ## 23. Qualitäts-Gates (§35), Meilensteine (§36), Definition of Done (§37), Abschlussfrage (§38)
 
