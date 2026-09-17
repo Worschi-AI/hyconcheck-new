@@ -1,6 +1,6 @@
 # ADR-0001 – Vollständiger technischer Neuaufbau ohne Übernahme aus früheren Repositorys
 
-- **Status:** angenommen
+- **Status:** angenommen – präzisiert durch [ADR-0002](ADR-0002-master-prompt-als-massgebliche-quelle.md) (17.09.2026); Inhalt unverändert
 - **Datum:** 2026-09-17
 - **Bezug:** BL-000 (Projekteinrichtung)
 

@@ -1,45 +1,38 @@
-# AGENTS.md – Arbeitsregeln für dieses Repository
+# AGENTS.md – Einstieg für alle Mitwirkenden und Werkzeuge
 
-Dieses Dokument gilt für alle Mitwirkenden und für alle automatisierten Werkzeuge, die in diesem Repository arbeiten. Es ist zusammen mit [docs/HYCONCHECK_MASTER_PROMPT.md](docs/HYCONCHECK_MASTER_PROMPT.md) vor jeder Arbeitssitzung zu lesen.
+Maßgebliche fachliche Quelle ist der vollständige Forschungsauftrag [docs/HYCONCHECK_MASTER_PROMPT.md](docs/HYCONCHECK_MASTER_PROMPT.md) (§0–§39). Bei Widersprüchen zwischen älteren Projektunterlagen und dem Master-Prompt hat dessen Abschnitt „Verbindlicher Projektkern“ (§2) Vorrang. Dieses Dokument bleibt bewusst kurz und verweist auf die verbindlichen Detaildokumente.
 
-## 1. Geltungsbereich und Grundsatz
+## Vor jeder Etappe lesen (Master-Prompt §1, §30)
 
-- Das Repository ist ein **vollständiger technischer Neuaufbau** von HyConCheck. Es werden keine Dateien, Commits, Erledigungsstände oder Forschungsergebnisse aus früheren Repositorys übernommen (siehe [ADR-0001](docs/decisions/ADR-0001-neuaufbau-ohne-uebernahme.md)).
-- Es wird ausschließlich in **diesem lokalen Repository** gearbeitet.
-- Projektzeitraum: **01.09.2026 – 31.12.2027**.
-- Arbeitssprache in Repository-Dateien ist Deutsch; Fachbegriffe, Bezeichner und Code dürfen englisch sein.
+1. `AGENTS.md`
+2. [docs/PROJECT_CHARTER.md](docs/PROJECT_CHARTER.md)
+3. [docs/RESEARCH_DESIGN.md](docs/RESEARCH_DESIGN.md)
+4. [status/CURRENT_STATUS.md](status/CURRENT_STATUS.md)
+5. [planning/BACKLOG.md](planning/BACKLOG.md)
+6. relevante aktuelle Artefakte
 
-## 2. Git-Regeln
+Verbindlicher Gesamtplan: [planning/PROJECT_PLAN_2026_2027.md](planning/PROJECT_PLAN_2026_2027.md) (§0).
 
-- Standard-Arbeitsbranch für die Grundlagenphase: `work/project-foundation`. Neue Branches werden nur auf ausdrückliche Anweisung angelegt.
-- Commits werden lokal erstellt. Ein Push oder das Anlegen eines Pull Requests erfolgt **nur auf ausdrückliche Anweisung**.
-- Es wird die bereits konfigurierte lokale Git-Identität verwendet (`git config --local user.name` / `user.email`). Sie wird nicht überschrieben.
-- Commit-Messages sind knapp, deutsch, im Infinitiv („… einrichten“, „… ergänzen“).
-- **Keine Commit-Trailer** wie `Co-authored-by`, `Generated-by`, `Signed-off-by` oder sonstige Werkzeug-/Anbieterattribution.
-- Vor jedem Commit: die anwendbaren Qualitätsprüfungen ausführen (Abschnitt 6).
+## Kernregeln (Kurzfassung, Details im Master-Prompt)
 
-## 3. Unzulässige Inhalte in Repository-Dateien
+- **Neuaufbau (§0, §2, §39):** keine Übernahme von Dateien, Commits, Erledigungsständen oder Ergebnissen aus früheren Repositorys; keine Git-Historie umschreiben, keine Rückdatierung, keine Vermischung von Historien; Arbeiten außerhalb dieses Repositorys weder leugnen noch als hier durchgeführt darstellen. Siehe [ADR-0001](docs/decisions/ADR-0001-neuaufbau-ohne-uebernahme.md), [ADR-0002](docs/decisions/ADR-0002-master-prompt-als-massgebliche-quelle.md).
+- **Projektzeitraum:** 01.09.2026 – 31.12.2027 (§2).
+- **Werkzeugneutralität (§0, §39.12):** keine Attribution von Entwicklungswerkzeugen oder Anbietern in Dateien, Branch-Namen, Commit-Messages, Commit-Trailern, PR-Titeln oder PR-Beschreibungen. Fachbegriffe wie KI, Machine Learning, LLM, NLI, Embeddings bleiben zulässig.
+- **Planstunden (§25):** ausschließlich Planwerte; keine Ist-Stunden ableiten, keine Stundenzettel erzeugen; Werkzeug-/Modell-/Rechnerlaufzeit ist keine menschliche Arbeitszeit; technische Aktivitätsprotokolle und Zeitaufzeichnungen bleiben getrennt.
+- **Wissenschaftliche Integrität (§23):** keine erfundenen Ergebnisse, Quellen, Messwerte oder Tätigkeiten; kein Cherry Picking; Testdaten nie zur Optimierung; negative Ergebnisse werden dokumentiert.
+- **Testset-Schutz (§11):** gruppierter 60/20/20-Split, eingefrorenes Testset, Testlabels nicht für Entwicklung, Promptoptimierung, Schwellenwertwahl, Modellauswahl oder Fehlerkorrektur.
+- **Reproduzierbarkeit (§24):** Commit, Dataset-Version, Konfiguration, Modell-/Promptversion, Seed, Rohresultate, Auswertungscode, Kennzahlen.
+- **Ressourcen (§33):** keine kostenpflichtigen APIs oder Dienste ohne ausdrückliche Freigabe; Open-Source-Modelle, kleine Entwicklungsdatensätze, Caching, gestufte Experimente bevorzugen.
+- **Secrets (§32):** keine Secrets in Quellcode, Logs, Prompts, Commits oder Datensätzen; keine eigenmächtige Erzeugung von Zugangsdaten oder Authentifizierung.
+- **Status (§28, §39.11):** PLANUNG strikt von TATSÄCHLICH DURCHGEFÜHRTER ARBEIT trennen; nichts ohne geprüftes Artefakt als abgeschlossen führen; kein Taxonomie-Obertyp ist derzeit abgeschlossen.
 
-- Keine operativen Hinweise auf konkrete Entwicklungsassistenten, KI-Werkzeuge oder deren Anbieter (weder im Text noch in Kommentaren, Metadaten oder Commit-Messages).
-- Fachlich notwendige Begriffe bleiben zulässig: KI, Machine Learning, LLM, NLI, Embeddings, Transformer usw. – sofern sie den Forschungsgegenstand betreffen.
-- Keine fiktiven Stundenzettel, keine erfundenen Ist-Stunden, keine erfundenen Messwerte, Zitate oder Quellen.
+## Arbeitsprozess je Etappe (§30)
 
-## 4. Planstunden
+Genau eine abgegrenzte Etappe auswählen und tatsächlich durchführen → Tests ausführen → Ergebnisse und Fehlschläge dokumentieren → [status/CURRENT_STATUS.md](status/CURRENT_STATUS.md), [planning/BACKLOG.md](planning/BACKLOG.md) und [status/DAILY_LOG.md](status/DAILY_LOG.md) aktualisieren → sachlich benannten Commit erstellen → Pull Request vorbereiten (nicht automatisch zusammenführen) → nächsten Schritt festhalten. Nicht die leichteste Aufgabe wählen, sondern nach Abhängigkeiten, Erkenntnisgewinn und aktuellem Arbeitspaket priorisieren.
 
-- Alle Stundenangaben sind **Planwerte** (AP1–AP7, Jahresscheiben 2026/2027). Sie werden nicht als geleistete Personenstunden interpretiert oder fortgeschrieben.
-- Ist-Stunden werden ausschließlich aus einem tatsächlich vorliegenden Zeitnachweis übernommen. Liegt `HyConCheck_Zeitnachweis.xlsx` nicht vor, bleibt dies als offene Planungsgrundlage dokumentiert.
+Git-Identität: die lokal konfigurierte (`git config --local user.name` / `user.email`); keine Commit-Trailer.
 
-## 5. Statusführung
-
-- [status/CURRENT_STATUS.md](status/CURRENT_STATUS.md) beschreibt den aktuellen Gesamtstand und die nächste Etappe. Es wird bei jeder inhaltlichen Änderung aktualisiert.
-- [status/DAILY_LOG.md](status/DAILY_LOG.md) erhält je Arbeitstag einen Eintrag (Datum, erledigt, offen, Entscheidungen, nächste Schritte). Einträge werden nicht rückwirkend verändert, nur ergänzt.
-- [planning/BACKLOG.md](planning/BACKLOG.md) führt alle Arbeitseinheiten (`BL-nnn`) mit Status `offen`, `in Arbeit`, `blockiert` oder `abgeschlossen`.
-- Ein Backlog-Eintrag, ein Arbeitspaket oder ein Taxonomie-Obertyp gilt nur dann als `abgeschlossen`, wenn das Ergebnis im Repository vorliegt und geprüft wurde. Abschlussbehauptungen ohne Artefakt sind unzulässig.
-- Kein Taxonomie-Obertyp ist zum jetzigen Zeitpunkt abgeschlossen.
-
-## 6. Qualitätsprüfungen
-
-Vor jedem Commit werden die aktuell anwendbaren Prüfungen ausgeführt; in der Grundlagenphase sind das mindestens:
+## Qualitätsprüfungen (§31, §39.15)
 
 ```bash
 py tests/check_repo_conventions.py
@@ -49,22 +42,14 @@ py tests/check_repo_conventions.py
 git diff --check
 ```
 
-Kommen Code, Daten oder Experimente hinzu, werden die zugehörigen Tests, Schemaprüfungen und Reproduzierbarkeitsprüfungen ergänzt und in [tests/](tests/) abgelegt.
+Bei Codeänderungen zusätzlich `python -m pytest` und `ruff check .` sowie geeignete fachliche Validierungen. Solange kein ausführbarer Projektcode vorliegt, wird deren Nichtanwendbarkeit in [tests/README.md](tests/README.md) dokumentiert. Fehlgeschlagene Prüfungen werden nicht verschwiegen; keine Scheintests.
 
-## 7. Entscheidungen
+## Entscheidungen und Experimente
 
-- Projekt- und Architekturentscheidungen werden als ADR in [docs/decisions/](docs/decisions/) festgehalten (Vorlage: [ADR-0000-vorlage.md](docs/decisions/ADR-0000-vorlage.md)).
-- Offene Fragen werden als offen markiert, nicht stillschweigend entschieden.
+- Wesentliche Entscheidungen als ADR in [docs/decisions/](docs/decisions/) nach dem Schema in §29 (Vorlage: [ADR-0000-vorlage.md](docs/decisions/ADR-0000-vorlage.md)).
+- Experimente nur mit Protokoll `EXP-YYYY-NNNN` in [experiments/](experiments/) nach §18/§19; derzeit werden keine Experimente durchgeführt (§39).
+- Daten nach §10–§12 in [data/](data/); Quellen nach §34 in [references/](references/); Ergebnisse nach §24 in [results/](results/).
 
-## 8. Experimente und Daten
+## Berichtsformat nach einer Etappe (§39)
 
-- Experimente werden erst durchgeführt, wenn ein Experimentprotokoll in [experiments/](experiments/) vorliegt (Ziel, Hypothesenbezug, Daten, Konfiguration, Metriken, Abbruchkriterien).
-- Daten werden nur mit dokumentierter Herkunft und Lizenz abgelegt (siehe [data/README.md](data/README.md)).
-- Ergebnisse werden reproduzierbar mit Konfiguration und Versionsstand in [results/](results/) dokumentiert.
-
-## 9. Berichtsformat nach einer Arbeitssitzung
-
-1. geänderte/erstellte Dateien
-2. durchgeführte Prüfungen und Ergebnisse
-3. Commit-SHA und vollständige Commit-Message (sofern committet)
-4. offene Punkte und nächste Etappe
+erstellte/geänderte Dateien · eingerichtete oder geänderte Grundlagen · Prüfungen und Testergebnisse · offene Planungsgrundlagen · offene methodische Punkte · Terminrisiken und Gegenmaßnahmen · Commit · vorbereiteter Pull Request · nächste fachlich sinnvolle Etappe.

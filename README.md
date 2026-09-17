@@ -1,20 +1,38 @@
 # HyConCheck
 
-Technischer Neuaufbau des Forschungsvorhabens **HyConCheck** – hybride Konsistenzprüfung technischer Dokumentenbestände.
+**Hybrides Verfahren zur Erkennung semantischer, temporaler und statusbezogener Widersprüche in heterogenen IT-Dokumenten**
+
+Technischer Neuaufbau der Projektgrundlage. Maßgebliche fachliche Quelle ist der vollständige Forschungsauftrag in [docs/HYCONCHECK_MASTER_PROMPT.md](docs/HYCONCHECK_MASTER_PROMPT.md).
 
 | Eckdaten | |
 |---|---|
 | Projektzeitraum | 01.09.2026 – 31.12.2027 |
-| Planungsvolumen | 2.560 Planstunden (2026: 640 h, 2027: 1.920 h) |
-| Arbeitspakete | AP1 – AP7 (siehe [Projektplan](planning/PROJECT_PLAN_2026_2027.md)) |
-| Aktueller Stand | siehe [status/CURRENT_STATUS.md](status/CURRENT_STATUS.md) |
-| Nächste fachliche Etappe | BL-001 – Rechercheprotokoll und Suchstrategie für den Stand der Technik |
+| Planungsvolumen | 2.560 Planstunden (2026: 640 h, 2027: 1.920 h) – Planwerte des Forschungsantrags |
+| Arbeitspakete | AP1 – AP7 nach Master-Prompt §25, siehe [Projektplan](planning/PROJECT_PLAN_2026_2027.md) |
+| Aktueller Stand | [status/CURRENT_STATUS.md](status/CURRENT_STATUS.md) |
+| Nächste fachliche Etappe | BL-001 – Definition des Rechercheprotokolls und der Suchstrategie für den Stand der Technik (AP1) |
 
-## Arbeitsverständnis
+## Forschungsziel und Kernumfang
 
-HyConCheck untersucht, wie Inkonsistenzen in technischen Dokumentenbeständen – etwa Widersprüche zwischen Anforderungen, Spezifikationen, Schnittstellenbeschreibungen und Statusangaben – mit hybriden Verfahren erkannt, typisiert und nachvollziehbar belegt werden können. „Hybrid“ meint dabei die Kombination regel- und strukturbasierter Analyse mit Verfahren des Machine Learning (z. B. NLI, Embeddings, LLM-gestützte Extraktion) sowie deren Zusammenführung über einen Evidenzgraphen und eine Fusionsstufe.
+Ziel ist die Entwicklung und experimentelle Validierung eines hybriden Verfahrens zur automatisierten Erkennung semantischer, temporaler und statusbezogener Widersprüche über heterogene IT-Projektdokumente hinweg (Master-Prompt §3).
 
-Die präzise Fassung der Forschungslücke, der Hypothesen H1–H7, des Benchmarks, der Ground Truth, der Baselines, des Evidenzgraphen, der Fusion und der finalen Architektur ist **offen** und wird in diesem Repository von Grund auf neu erarbeitet. Details: [docs/RESEARCH_DESIGN.md](docs/RESEARCH_DESIGN.md).
+Der Kernumfang umfasst insbesondere:
+
+- Anforderungen und Spezifikationen
+- Besprechungsprotokolle
+- Statusberichte
+- Projektpläne und Meilensteinübersichten
+- Tickets einschließlich Statusinformationen
+
+Andere Dokumenttypen dürfen später ausschließlich als klar gekennzeichnete explorative Robustheitsfälle untersucht werden; sie verändern den Kernumfang nicht.
+
+## Zentrale Forschungsfrage
+
+Kann eine Evidenzgraph-basierte hybride Fusions- und Entscheidungslogik semantische Modellsignale mit Entitäts-, Zeit-, Status- und Provenienzinformation so koppeln, dass dokumentübergreifende Widersprüche zuverlässiger erkannt werden als mit Regel-, Embedding-, NLI- und LLM-Einzelverfahren? (Master-Prompt §6)
+
+Teilforschungsfragen F1–F6, Ausgangshypothesen H1–H7 (Status: ungeprüft), Benchmark, Testset-Schutz, Baselines B0–B4, Entwicklungsstufen A–G, Metriken, Risiken und Experimentregeln: [docs/RESEARCH_DESIGN.md](docs/RESEARCH_DESIGN.md).
+
+Die im Master-Prompt §4 formulierte Wissenslücke wird in diesem Repository als **durch Literaturrecherche zu überprüfende Annahme** behandelt.
 
 ## Taxonomie – fünf verbindliche Obertypen
 
@@ -24,31 +42,31 @@ Die präzise Fassung der Forschungslücke, der Hypothesen H1–H7, des Benchmark
 4. Akteur und Verantwortung
 5. Abhängigkeit und Schnittstelle
 
-Die Operationalisierung aller Obertypen beginnt hier neu; kein Obertyp ist abgeschlossen. Siehe [docs/TAXONOMY_V1.md](docs/TAXONOMY_V1.md).
+Die Operationalisierung beginnt in diesem Repository neu (AP1); kein Obertyp ist abgeschlossen. Siehe [docs/TAXONOMY_V1.md](docs/TAXONOMY_V1.md).
 
 ## Neuaufbau ohne Übernahme
 
-Dieses Repository übernimmt **keine** Dateien, Commits, Erledigungsstände oder Forschungsergebnisse aus früheren Repositorys. Begründung und Konsequenzen: [ADR-0001](docs/decisions/ADR-0001-neuaufbau-ohne-uebernahme.md).
+Dieses Repository übernimmt keine Dateien, Commits, Erledigungsstände oder Forschungsergebnisse aus früheren Repositorys. Fachlich zum Vorhaben gehörende Arbeiten, die seit September 2026 außerhalb dieses Repositorys stattgefunden haben, liegen innerhalb des offiziellen Projektzeitraums, gelten hier aber nicht als durchgeführt oder abgeschlossen. Siehe [ADR-0001](docs/decisions/ADR-0001-neuaufbau-ohne-uebernahme.md) und [ADR-0002](docs/decisions/ADR-0002-master-prompt-als-massgebliche-quelle.md).
 
 ## Repository-Struktur
 
 ```
-AGENTS.md                      Arbeitsregeln für alle Mitwirkenden und Werkzeuge
+AGENTS.md                      Kurzer Einstieg mit Verweisen auf die verbindlichen Dokumente
 README.md                      Diese Übersicht
-configs/                       Konfigurationen für Experimente und Pipelines
-data/                          Datenbestände (Rohdaten, Annotationen, Ground Truth) – noch leer
+configs/                       Konfigurationen für Pipelines, Baselines, Experimente
+data/                          Benchmark, Ground Truth, Splits – noch leer
 docs/                          Fachliche Grundlagendokumente
-  HYCONCHECK_MASTER_PROMPT.md  Verbindlicher Arbeitsauftrag für jede Arbeitssitzung
+  HYCONCHECK_MASTER_PROMPT.md  Vollständiger verbindlicher Forschungsauftrag (§0–§39)
   PROJECT_CHARTER.md           Projektauftrag
-  RESEARCH_DESIGN.md           Forschungsdesign (Lücke, H1–H7, Benchmark, Evaluation)
-  TAXONOMY_V1.md               Taxonomie V1 (Obertypen, Operationalisierung)
-  decisions/                   Architektur- und Projektentscheidungen (ADR)
-experiments/                   Experimentdefinitionen und -protokolle – noch leer
-planning/                      Projektplan und Backlog
-references/                    Literatur- und Quellenverwaltung – noch leer
-results/                       Auswertungen und Ergebnisse – noch leer
+  RESEARCH_DESIGN.md           Forschungsdesign (Forschungsproblem, Forschungsfragen, H1–H7, Benchmark, Baselines, Metriken, Experimentregeln)
+  TAXONOMY_V1.md               Widerspruchstaxonomie V1 (Rahmen; Operationalisierung offen)
+  decisions/                   Entscheidungsprotokoll (ADR)
+experiments/                   Experimentregister und -protokolle (EXP-YYYY-NNNN) – noch leer
+planning/                      Projektplan, Backlog
+references/                    Quellenregister – noch leer
+results/                       Rohresultate und Kennzahlen – noch leer
 src/                           Quellcode – noch leer
-status/                        Aktueller Stand und Tageslog
+status/                        Aktueller Stand, Forschungsjournal (Tageslog)
 tests/                         Tests und Qualitätsprüfungen
 ```
 
@@ -58,8 +76,12 @@ tests/                         Tests und Qualitätsprüfungen
 py tests/check_repo_conventions.py
 ```
 
-Die Prüfung stellt sicher, dass die Pflichtdateien vorhanden sind, keine unzulässigen Werkzeug-/Anbieterhinweise enthalten sind, interne Links auflösbar sind und die Planstundensummen konsistent bleiben.
+```bash
+git diff --check
+```
 
-## Hinweis zu Planstunden
+`python -m pytest` und `ruff check .` sind nach Master-Prompt §31 bei Codeänderungen verbindlich. Derzeit enthält das Repository keinen ausführbaren Projektcode in `src/`; beide Prüfungen sind daher noch nicht anwendbar (siehe [tests/README.md](tests/README.md)). Es werden keine Scheintests für Planungsdokumente erzeugt.
 
-Alle Stundenangaben in diesem Repository sind **Planwerte**. Aus ihnen werden keine tatsächlich geleisteten Personenstunden abgeleitet. Ein Zeitnachweis (`HyConCheck_Zeitnachweis.xlsx`) liegt derzeit nicht vor; dies ist als offene Planungsgrundlage im [Projektplan](planning/PROJECT_PLAN_2026_2027.md) dokumentiert.
+## Planstunden und Forecast
+
+Alle Stundenangaben sind Planwerte des Forschungsantrags. Daraus werden keine tatsächlich geleisteten Personenstunden abgeleitet; es werden keine Stundenzettel erzeugt. Die Forecast-Quelle wurde bereitgestellt; ihre kontrollierte Prüfung und Integration erfolgt in einer separaten Etappe (siehe [Projektplan](planning/PROJECT_PLAN_2026_2027.md), Abschnitt Forecast).
