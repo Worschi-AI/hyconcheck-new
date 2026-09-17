@@ -1,13 +1,13 @@
 # HyConCheck – Aktueller Stand
 
 Stand: **17.09.2026**
-Branch: `work/bl-090-forecast-integration` (ausgehend von `main` @ `4f34ca1`)
+Branch: `work/bl-001-research-protocol` (ausgehend von `main` @ `c40f341`)
 Projektzeitraum: 01.09.2026 – 31.12.2027
 Maßgebliche Quelle: [docs/HYCONCHECK_MASTER_PROMPT.md](../docs/HYCONCHECK_MASTER_PROMPT.md)
 
 ## Gesamtstand
 
-In diesem Repository ist die Projektgrundlage eingerichtet (BL-000), an den vollständigen Forschungsauftrag angeglichen (BL-000a, [ADR-0002](../docs/decisions/ADR-0002-master-prompt-als-massgebliche-quelle.md)) und die Forecast-Quelle kontrolliert integriert (BL-090, [planning/forecast/](../planning/forecast/README.md)). Das Repository ist ein vollständiger Neuaufbau ohne Übernahme früherer Dateien, Commits, Erledigungsstände oder Forschungsergebnisse ([ADR-0001](../docs/decisions/ADR-0001-neuaufbau-ohne-uebernahme.md)).
+In diesem Repository ist die Projektgrundlage eingerichtet (BL-000), an den vollständigen Forschungsauftrag angeglichen (BL-000a, [ADR-0002](../docs/decisions/ADR-0002-master-prompt-als-massgebliche-quelle.md)) und die Forecast-Quelle kontrolliert integriert (BL-090, [planning/forecast/](../planning/forecast/README.md)). Als erste fachliche AP1-Etappe ist das Rechercheprotokoll für den Stand der Technik definiert (BL-001, [references/RESEARCH_PROTOCOL.md](../references/RESEARCH_PROTOCOL.md)); die Literaturrecherche selbst hat noch nicht begonnen. Das Repository ist ein vollständiger Neuaufbau ohne Übernahme früherer Dateien, Commits, Erledigungsstände oder Forschungsergebnisse ([ADR-0001](../docs/decisions/ADR-0001-neuaufbau-ohne-uebernahme.md)).
 
 **In diesem Repository** liegen noch keine Rechercheergebnisse, Daten, Implementierungen oder Experimente vor. Fachlich zum Vorhaben gehörende Arbeiten, die seit September 2026 außerhalb dieses Repositorys stattgefunden haben, liegen im Projektzeitraum, werden hier aber nicht als durchgeführt oder abgeschlossen geführt.
 
@@ -15,7 +15,7 @@ In diesem Repository ist die Projektgrundlage eingerichtet (BL-000), an den voll
 
 | AP | Inhalt (Kurz) | Planstunden | Status |
 |---|---|---:|---|
-| AP1 | Lösungsraum, Widerspruchstaxonomie, formale Kriterien | 200 | offen – nächste Etappe BL-001 |
+| AP1 | Lösungsraum, Widerspruchstaxonomie, formale Kriterien | 200 | offen – BL-001 (Rechercheprotokoll) abgeschlossen; nächste Etappe BL-002 (Recherche) |
 | AP2 | Benchmarkmethodik, Testdatengenerator, Ground Truth | 300 | offen |
 | AP3 | Baselines B0–B4, Evaluationspipeline, Vergleich | 400 | offen |
 | AP4 | Entitätsauflösung; Attribut-, Zeit-, Status-, Provenienzverarbeitung | 420 | offen |
@@ -41,13 +41,14 @@ Planstunden sind Planwerte des Forschungsantrags. Es sind keine Ist-Stunden vorh
 
 | Baustein | Status |
 |---|---|
-| Wissenslücke (§4) | zu überprüfende Annahme; Überprüfung durch Literaturrecherche offen (BL-004) |
+| Wissenslücke (§4) | zu überprüfende Annahme; Überprüfung durch Literaturrecherche offen (BL-002 → BL-004); Bias-Schutz im Rechercheprotokoll Abschnitt 16 |
 | Zentrale Forschungsfrage, F1–F6 | übernommen; offen |
 | Hypothesen H1–H7 | übernommen; **ungeprüft** |
 | Taxonomie-Obertypen (5) | verbindlich; Operationalisierung nicht begonnen |
 | Benchmark, Ground Truth, Split | offen |
 | Baselines B0–B4 | offen |
 | Evidenzgraph, Fusion, Architektur | offen; keine Vorfestlegung |
+| Stand der Technik / Literaturbasis | Rechercheprotokoll V1.0 definiert (BL-001); keine Suchläufe, keine Quellen erfasst, kein Stand der Technik bewertet |
 | Experimente | keine durchgeführt |
 
 ## Stand je Taxonomie-Obertyp
@@ -79,17 +80,17 @@ Noch kein AP-Übergang; kein Gate geprüft.
 
 ## Offene methodische Punkte
 
-- Überprüfung der Wissenslücke (BL-004), Operationalisierung von F1–F6/H1–H7 (BL-005), Taxonomie-Operationalisierung (BL-010 bis BL-014), Benchmark-Schema (BL-020), Verfügbarkeit einer kostenfreien LLM-Baseline B4 (BL-035, §33).
+- Durchführung der Literaturrecherche nach Protokoll (BL-002), Auswertung (BL-003), Überprüfung der Wissenslücke (BL-004), Operationalisierung von F1–F6/H1–H7 (BL-005), Taxonomie-Operationalisierung (BL-010 bis BL-014), Benchmark-Schema (BL-020), Verfügbarkeit einer kostenfreien LLM-Baseline B4 (BL-035, §33).
 
 ## Qualitätsprüfungen (letzter Lauf 17.09.2026)
 
-- `py tests/check_repo_conventions.py`: bestanden (inkl. Forecast-Prüfungen)
+- `py tests/check_repo_conventions.py`: bestanden (inkl. Forecast- und Rechercheprotokoll-Prüfungen)
 - `git diff --check`: bestanden
 - `python -m pytest`, `ruff check .`: noch nicht anwendbar (kein ausführbarer Projektcode in `src/`), siehe [tests/README.md](../tests/README.md)
 
 ## Nächste Etappe
 
-**BL-001 – Definition des Rechercheprotokolls und der Suchstrategie für den Stand der Technik (AP1).**
+**BL-002 – Recherche gemäß Rechercheprotokoll durchführen (AP1).** Erst in dieser Etappe werden die definierten Suchsysteme tatsächlich abgefragt.
 
 ## Verweise
 

@@ -17,6 +17,18 @@ Pflichtfelder je Eintrag:
 
 ---
 
+## 2026-09-17 – Etappe 7: BL-001 – Rechercheprotokoll und Suchstrategie für den Stand der Technik
+
+- **Arbeitspaket:** AP1
+- **Fragestellung / Ziel:** Wie wird die Stand-der-Technik-Recherche reproduzierbar durchgeführt, ohne die vermutete Forschungslücke nur bestätigend zu suchen? (Klärungsziele Z1–Z11 im Protokoll)
+- **Tätigkeit (automatisiert, werkzeuggestützt, unter Anweisung des Projektverantwortlichen):** Rechercheprotokoll V1.0 mit 22 Abschnitten definiert: Ziele, Zuordnung zu Forschungsfrage/F1–F6/H1–H7/AP1–AP6, 16 Themencluster A–P, Quellenpriorität und Umgang mit nicht peer-reviewten Quellen, 9 Suchsysteme (nur geplant), 16 Primär- und 24 ergänzende Suchstrings, Zeitraumregel, Sprache, 7 Einschluss-/8 Ausschlusskriterien, vierstufiges Screening, Dublettenregel, Provenienzschema (21 Felder), Extraktionsschema (29 Felder), qualitative Qualitätsbewertung (5 Kriterien, hoch/mittel/niedrig), Umgang mit widersprüchlicher Literatur, Research-Gap-Bias-Schutz, Stop-/Sättigungskriterium, Snowballing, Suchlauf-Protokollfelder, Folgeartefakte, Datenschutz, Abschlusskriterium. Leere Vorlagen für Suchprotokoll, Quellenregister und Extraktionsmatrix angelegt. Prüfskript um Protokollprüfungen erweitert. **Keine** Webrecherche, keine Datenbankabfrage, keine Quelle erfasst.
+- **Artefakte:** `references/RESEARCH_PROTOCOL.md`, `references/LITERATURE_SEARCH_LOG.md` (Vorlage, 0 Läufe), `references/SOURCES.md` (Vorlage, 0 Quellen), `references/LITERATURE_MATRIX.csv` (nur Kopfzeile), `references/README.md`, `planning/BACKLOG.md`, `status/CURRENT_STATUS.md`, `status/DAILY_LOG.md`, `docs/RESEARCH_DESIGN.md` (Verweis in Abschnitt 22), `tests/check_repo_conventions.py`, `tests/README.md`
+- **Ergebnis und Prüfungen:** `py tests/check_repo_conventions.py` bestanden (inkl. neuer Protokollprüfungen und Negativtests mit vollständiger Rücknahme); `git diff --check` bestanden; `python -m pytest` / `ruff check .` weiterhin nicht anwendbar (siehe `tests/README.md`).
+- **Interpretation:** Die Recherche ist jetzt reproduzierbar definiert; inhaltliche Aussagen zum Stand der Technik sind erst nach BL-002/BL-003 möglich.
+- **Einschränkungen und Fehlschläge:** Kein Literaturergebnis; Wissenslücke bleibt zu überprüfende Annahme; H1–H7 ungeprüft; kein Obertyp operationalisiert; AP1 offen.
+- **Entscheidung / nächster Schritt:** BL-001 abgeschlossen (nur Protokolldefinition). Nächste fachliche Etappe: BL-002 – Recherche gemäß Protokoll durchführen.
+- **Commit-/PR-Referenz:** Branch `work/bl-001-research-protocol` (Basis `main` @ `c40f341`), Commit „Rechercheprotokoll für Stand der Technik definieren“ (SHA in der Git-Historie); PR noch nicht erstellt.
+
 ## 2026-09-17 – Etappe 6: BL-090 – kontrollierte Forecast-Integration
 
 - **Arbeitspaket:** Planung/Einrichtung (kein Forschungs-AP)

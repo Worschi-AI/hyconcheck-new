@@ -6,7 +6,7 @@ Statuswerte: `offen`, `in Arbeit`, `blockiert`, `abgeschlossen`. Ein Eintrag wir
 
 ## Nächste fachliche Etappe
 
-**BL-001 – Definition des Rechercheprotokolls und der Suchstrategie für den Stand der Technik (AP1).**
+**BL-002 – Recherche gemäß Rechercheprotokoll durchführen (AP1).** BL-001 (Protokoll) ist abgeschlossen; AP1 bleibt offen.
 
 ## Einrichtung (Repository)
 
@@ -19,10 +19,10 @@ Statuswerte: `offen`, `in Arbeit`, `blockiert`, `abgeschlossen`. Ein Eintrag wir
 
 | ID | Titel | Status | Artefakt (geplant) |
 |---|---|---|---|
-| BL-001 | Rechercheprotokoll und Suchstrategie für den Stand der Technik definieren: Fragestellungen, Recherchethemen nach §34, Suchbegriffe, Quellen/Datenbanken, Quellenpriorität (§34), Ein-/Ausschlusskriterien, Screening-Verfahren, Provenienz- und Dokumentationsform | offen | `docs/RESEARCH_PROTOCOL.md`, Ablagestruktur `references/` |
-| BL-002 | Recherche gemäß Protokoll durchführen; Quellen mit vollständiger Provenienz im Quellenregister erfassen (keine ungeprüften Quellen) | offen | `references/` (Quellenregister, Screening-Protokoll) |
+| BL-001 | Rechercheprotokoll und Suchstrategie für den Stand der Technik definieren: Fragestellungen, Recherchethemen nach §34, Suchbegriffe, Quellen/Datenbanken, Quellenpriorität (§34), Ein-/Ausschlusskriterien, Screening-Verfahren, Provenienz- und Dokumentationsform | abgeschlossen (17.09.2026) | `references/RESEARCH_PROTOCOL.md` (V1.0); Vorlagen `references/LITERATURE_SEARCH_LOG.md`, `references/SOURCES.md`, `references/LITERATURE_MATRIX.csv` (leer). Abgeschlossen ist nur die Protokolldefinition – keine Recherche durchgeführt, kein Stand der Technik bewertet, keine Lücke bestätigt, AP1 offen. |
+| BL-002 | Recherche gemäß `references/RESEARCH_PROTOCOL.md` durchführen: Suchläufe in den definierten Systemen (Abschnitte 5, 6, 19), Screening (Abschnitt 10), Snowballing (Abschnitt 18) bis Stopkriterium (Abschnitt 17); Quellen mit vollständiger Provenienz erfassen (keine ungeprüften Quellen) | offen – nächste fachliche Etappe | `references/LITERATURE_SEARCH_LOG.md`, `references/SOURCES.md`, `references/LITERATURE_MATRIX.csv` |
 | BL-003 | Technischen Lösungsraum und Stand der Technik strukturiert auswerten (Verfahren, Benchmarks, Taxonomien, Evidenzrepräsentation, Fusion, Kalibrierung) | offen | `docs/STATE_OF_THE_ART.md` |
-| BL-004 | Wissenslücke (§4) durch Literaturrecherche überprüfen: bestätigen, einschränken oder verwerfen; Ergebnis begründen | offen | Abschnitt in `docs/RESEARCH_DESIGN.md`, ADR |
+| BL-004 | Wissenslücke (§4) durch Literaturrecherche überprüfen: `gestützt` / `präzisiert` / `widerlegt` mit Belegen über Source-IDs (Protokoll Abschnitt 16); Ergebnis begründen | offen | Abschnitt in `docs/RESEARCH_DESIGN.md`, ADR |
 | BL-005 | Forschungsfragen F1–F6 und Hypothesen H1–H7 operationalisieren: Metriken, Entscheidungskriterien, geplante Experimente je Hypothese (kein Umformulieren, keine Vorwegnahme von Ergebnissen) | offen | `docs/RESEARCH_DESIGN.md`, `experiments/REGISTER.md` |
 | BL-010 | Obertypen operationalisieren: Definition, Entscheidungstest, Ein-/Ausschlusskriterien, Grenzfälle, Abgrenzung je Obertyp (§9) | offen | `docs/TAXONOMY_V1.md` |
 | BL-011 | Synthetische Positiv-, Negativ- und unklare Beispiele je Obertyp erstellen (als synthetisch gekennzeichnet) | offen | `docs/TAXONOMY_V1.md` |
