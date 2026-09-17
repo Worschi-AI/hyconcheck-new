@@ -26,6 +26,16 @@ Prüft gegen den verbindlichen Master-Prompt (docs/HYCONCHECK_MASTER_PROMPT.md):
     Extraktionsfelder, Research-Gap-Bias-Schutz, Stop-/Saettigungskriterium; Vorlagen
     (Suchprotokoll, Quellenregister, Matrix) ohne unbelegte Eintraege; BL-001 nur
     abgeschlossen, wenn das Protokoll vollstaendig ist (§34, §39.5).
+12. Literaturregister (BL-002.x): keine doppelten/leeren Source-IDs in Register und
+    Matrix; jede Matrixzeile hat einen aufgenommenen Registereintrag; DOI/URL syntaktisch
+    gueltig; Suchprotokoll enthaelt Laeufe; keine Hypothese in der Matrix als bestaetigt/
+    widerlegt bewertet; Review A-E vorhanden, wenn BL-002.1 abgeschlossen; BL-002 und AP1
+    nicht abgeschlossen; Forschungsluecke nicht als bestaetigt gefuehrt (§8, §23, §34).
+13. Audit-Praezision (BL-002.1): screening_status nur aus dem Protokollvokabular; die 12
+    bekannten Abstract-only-Quellen tragen 'abstract-only' (nie 'fulltext'/'included') und
+    keine Volltext-Qualitaetsbewertung; Suchprotokoll-Tabellenzeilen haben 11 Zellen (Pipes
+    escaped); SRC-0044 nicht unbelegt als symbolisch/hybrid; Benchmark-Aussage im Review auf
+    Volltext-geprueft eingeschraenkt.
 
 Aufruf: py tests/check_repo_conventions.py
 Exit-Code 0 bei Erfolg, 1 bei mindestens einem Befund.
@@ -69,6 +79,7 @@ REQUIRED_FILES = [
     "references/LITERATURE_SEARCH_LOG.md",
     "references/SOURCES.md",
     "references/LITERATURE_MATRIX.csv",
+    "references/reviews/REVIEW_A_E_CONTRADICTION_NLI.md",
 ]
 
 REQUIRED_DIRS = [
@@ -230,19 +241,49 @@ def check_required() -> None:
             report(f"Pflichtverzeichnis fehlt: {rel}")
 
 
+# Bibliografische Ausnahme (§0, §39.12 – „fachlich notwendige Begriffe bleiben unberührt“):
+# Im Quellenregister darf ein Anbieter-/Modellname nur im verifizierten Titel einer Quelle
+# stehen; in der Literaturmatrix nur in Feldern, die beschreiben, welche Modelle die zitierte
+# Arbeit untersucht hat. Alle anderen Dateien und Felder bleiben vollständig gesperrt.
+BIBLIOGRAPHIC_MATRIX_FIELDS = {"method", "dataset_benchmark", "semantic_model", "baselines", "key_results", "limitations"}
+
+
+def _has_forbidden(text: str) -> str | None:
+    lowered = text.lower()
+    for term in FORBIDDEN_TERMS:
+        if term in lowered:
+            return term
+    return None
+
+
 def check_forbidden_terms(files: list[Path]) -> None:
     this_file = Path(__file__).resolve()
     for path in files:
         if path.resolve() == this_file:
             continue
+        rel = path.relative_to(ROOT).as_posix()
+        if path.resolve() == SOURCES.resolve():
+            for lineno, line in enumerate(read(path).splitlines(), start=1):
+                cells = [c.strip() for c in line.strip().strip("|").split("|")] if line.startswith("| SRC-") else None
+                probe = "|".join(cells[:1] + cells[2:]) if cells and len(cells) > 2 else line
+                term = _has_forbidden(probe)
+                if term:
+                    report(f"Unzulässiger Werkzeug-/Anbieterhinweis '{term}' außerhalb eines Quellentitels in {rel}:{lineno}")
+            continue
+        if path.resolve() == MATRIX.resolve():
+            fields, rows = read_csv(path)
+            for i, row in enumerate(rows, start=2):
+                for field in fields:
+                    if field in BIBLIOGRAPHIC_MATRIX_FIELDS:
+                        continue
+                    term = _has_forbidden(row.get(field) or "")
+                    if term:
+                        report(f"Unzulässiger Werkzeug-/Anbieterhinweis '{term}' im Feld {field} in {rel}:{i}")
+            continue
         for lineno, line in enumerate(read(path).splitlines(), start=1):
-            lowered = line.lower()
-            for term in FORBIDDEN_TERMS:
-                if term in lowered:
-                    report(
-                        f"Unzulässiger Werkzeug-/Anbieterhinweis '{term}' in "
-                        f"{path.relative_to(ROOT).as_posix()}:{lineno}"
-                    )
+            term = _has_forbidden(line)
+            if term:
+                report(f"Unzulässiger Werkzeug-/Anbieterhinweis '{term}' in {rel}:{lineno}")
 
 
 LINK_RE = re.compile(r"(?<!!)\[[^\]]*\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
@@ -618,6 +659,166 @@ def check_research_protocol() -> list[str]:
     return local
 
 
+def check_literature_register() -> list[str]:
+    """Prüft Quellenregister, Matrix, Suchprotokoll und Review-Konsistenz (BL-002.x)."""
+    local: list[str] = []
+
+    def rep(msg: str) -> None:
+        local.append(msg)
+        report(msg)
+
+    if not (SOURCES.is_file() and MATRIX.is_file() and SEARCH_LOG.is_file()):
+        return local
+    sources_text = read(SOURCES)
+    ids = re.findall(r"^\| (SRC-\d{4}) \|", sources_text, flags=re.M)
+    if len(ids) != len(set(ids)):
+        dup = sorted({i for i in ids if ids.count(i) > 1})
+        rep(f"Quellenregister: doppelte Source-IDs {dup}")
+    for line in sources_text.splitlines():
+        if line.startswith("| SRC-") or (line.startswith("|") and re.match(r"^\|\s*\|", line)):
+            cells = [c.strip() for c in line.strip().strip("|").split("|")]
+            if not cells or not cells[0]:
+                rep("Quellenregister: Zeile mit leerer Source-ID")
+    included_ids = set()
+    for line in sources_text.splitlines():
+        if line.startswith("| SRC-"):
+            cells = [c.strip() for c in re.split(r"(?<!\\)\|", line.strip().strip("|"))]
+            if len(cells) > 13 and cells[13] == "aufnahme":
+                included_ids.add(cells[0])
+            if len(cells) > 5 and cells[5] and not re.fullmatch(r"10\.\d{4,9}/\S+", cells[5]):
+                rep(f"Quellenregister: {cells[0]} hat eine syntaktisch ungültige DOI '{cells[5]}'")
+            if len(cells) > 6 and cells[6] and not re.match(r"https?://", cells[6]):
+                rep(f"Quellenregister: {cells[0]} hat keine gültige URL")
+    _, matrix = read_csv(MATRIX)
+    matrix_ids = [r.get("source_id", "") for r in matrix]
+    if any(not m for m in matrix_ids):
+        rep("Literaturmatrix: Zeile mit leerer Source-ID")
+    if len(matrix_ids) != len(set(matrix_ids)):
+        rep("Literaturmatrix: doppelte Source-IDs")
+    missing = sorted(set(matrix_ids) - set(ids))
+    if missing:
+        rep(f"Literaturmatrix: Source-IDs ohne Registereintrag {missing[:5]}")
+    not_included = sorted(set(matrix_ids) & (set(ids) - included_ids))
+    if not_included:
+        rep(f"Literaturmatrix: Zeilen für ausgeschlossene Quellen {not_included[:5]}")
+    for r in matrix:
+        for field in ("relation_H", "key_results", "relevance_hyconcheck"):
+            if re.search(r"\bH[1-7]\b[^|]{0,40}\b(bestätigt|widerlegt)\b", r.get(field, ""), flags=re.I) and "Stand der Technik" not in r.get(field, ""):
+                rep(f"Literaturmatrix: {r['source_id']} bewertet eine Hypothese im Feld {field}")
+    runs = re.findall(r"^\| (RUN-\d{4}) \|", read(SEARCH_LOG), flags=re.M)
+    if len(runs) != len(set(runs)):
+        rep("Suchprotokoll: doppelte run_ids")
+    if ids and not runs:
+        rep("Suchprotokoll: Quellen im Register, aber keine dokumentierten Suchläufe")
+    return local
+
+
+ABSTRACT_ONLY_IDS = {
+    "SRC-0004", "SRC-0005", "SRC-0007", "SRC-0031", "SRC-0037", "SRC-0039",
+    "SRC-0041", "SRC-0042", "SRC-0043", "SRC-0044", "SRC-0046", "SRC-0050",
+}
+ALLOWED_SCREENING = {"title", "abstract", "fulltext", "included", "abstract-only"}
+
+
+def check_audit_precision() -> list[str]:
+    """Prüfungen aus dem Qualitäts-Audit BL-002.1: abstract-only-Status, Pipe-Escaping,
+    SRC-0044-Darstellung, eingeschränkte Benchmark-Aussage."""
+    local: list[str] = []
+
+    def rep(msg: str) -> None:
+        local.append(msg)
+        report(msg)
+
+    if SOURCES.is_file():
+        for line in read(SOURCES).splitlines():
+            if not line.startswith("| SRC-"):
+                continue
+            cells = [c.strip() for c in re.split(r"(?<!\\)\|", line.strip().strip("|"))]
+            if len(cells) < 16:
+                rep(f"Quellenregister: Zeile {cells[0] if cells else '?'} hat zu wenige Zellen ({len(cells)})")
+                continue
+            sid, status, decision, just = cells[0], cells[12], cells[13], cells[15]
+            if status not in ALLOWED_SCREENING:
+                rep(f"Quellenregister: {sid} hat unzulässigen screening_status '{status}'")
+            if "Abstract-Basis" in just and status in ("fulltext", "included"):
+                rep(f"Quellenregister: {sid} ist Abstract-Basis, trägt aber screening_status '{status}'")
+            if sid in ABSTRACT_ONLY_IDS and not (status == "abstract-only" and decision == "aufnahme"):
+                rep(f"Quellenregister: {sid} muss als 'abstract-only' aufgenommen sein (ist '{status}'/'{decision}')")
+            if status == "abstract-only" and "Abstract-Basis" not in just:
+                rep(f"Quellenregister: {sid} ist abstract-only, aber die Einschränkung ist in justification nicht benannt")
+        if "keine** Volltextprüfung" not in read(SOURCES) and "keine Volltextprüfung" not in read(SOURCES):
+            rep("Quellenregister: Erklärung fehlt, dass abstract-only keine Volltextprüfung ist")
+    if MATRIX.is_file():
+        _, rows = read_csv(MATRIX)
+        for r in rows:
+            if r.get("source_id") in ABSTRACT_ONLY_IDS:
+                if not all("nicht bewertet" in r.get(f, "") for f in ("quality_transparency", "quality_reproducibility", "quality_evaluation")):
+                    rep(f"Literaturmatrix: {r['source_id']} (abstract-only) trägt Qualitätsbewertungen, die Volltext voraussetzen")
+            if r.get("source_id") == "SRC-0044":
+                for f in ("method", "relevance_hyconcheck", "fusion_method", "graph_representation"):
+                    if re.search(r"symbolisch|hybrid", r.get(f, ""), flags=re.I) and "keine symbolische Komponente" not in r.get(f, ""):
+                        rep(f"Literaturmatrix: SRC-0044 im Feld {f} unbelegt als symbolisch/hybrid beschrieben")
+    if SEARCH_LOG.is_file():
+        for line in read(SEARCH_LOG).splitlines():
+            if line.startswith("| RUN-"):
+                cells = re.split(r"(?<!\\)\|", line.strip().strip("|"))
+                if len(cells) != 11:
+                    rep(f"Suchprotokoll: {cells[0].strip()} hat {len(cells)} statt 11 Zellen – unescapte Pipe-Zeichen beschädigen die Tabelle")
+    review = ROOT / "references/reviews/REVIEW_A_E_CONTRADICTION_NLI.md"
+    if review.is_file():
+        rtext = read(review)
+        for sentence in re.split(r"(?<=[.;])\s+", rtext):
+            if ("SRC-0044" in sentence and re.search(r"hybride?s? symbolisch|symbolisch-neuronal", sentence)
+                    and "keine symbolische Komponente" not in sentence and not re.search(r"nicht (mehr )?als symbolisch", sentence)):
+                rep("Review A–E: SRC-0044 wird unbelegt als symbolisch-neuronales Hybridverfahren geführt")
+                break
+        if re.search(r"Kein geprüfter Benchmark enthält", rtext):
+            rep("Review A–E: Benchmark-Aussage ist uneingeschränkt formuliert")
+        if "im Volltext geprüft" not in rtext:
+            rep("Review A–E: Benchmark-Aussage ohne Einschränkung auf Volltext-geprüfte Benchmarks")
+    return local
+
+
+def check_literature_status(register_findings: list[str]) -> None:
+    """BL-002.x-Status: Review vorhanden, BL-002/AP1 nicht abgeschlossen, keine Lücke bestätigt."""
+    if not BACKLOG.is_file():
+        return
+    backlog = read(BACKLOG)
+    review = ROOT / "references/reviews/REVIEW_A_E_CONTRADICTION_NLI.md"
+    for line in backlog.splitlines():
+        if not line.startswith("| BL-00"):
+            continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) < 3:
+            continue
+        bl, status = cells[0], cells[2].lower()
+        if bl == "BL-002.1" and status.startswith("abgeschlossen"):
+            if not review.is_file():
+                report("Backlog: BL-002.1 abgeschlossen, aber Review A–E fehlt")
+            if register_findings:
+                report("Backlog: BL-002.1 abgeschlossen, aber Literaturregister inkonsistent")
+        if bl == "BL-002" and status.startswith("abgeschlossen"):
+            for t in ("BL-002.2", "BL-002.3", "BL-002.4", "BL-002.5"):
+                m = re.search(rf"^\| {re.escape(t)} \|[^|]*\|\s*([^|]*)\|", backlog, flags=re.M)
+                if not m or not m.group(1).strip().lower().startswith("abgeschlossen"):
+                    report(f"Backlog: BL-002 als abgeschlossen geführt, obwohl {t} nicht abgeschlossen ist")
+                    break
+    if STATUS.is_file():
+        status_text = read(STATUS)
+        if re.search(r"^\| AP1 \|[^|]*\|[^|]*\|\s*abgeschlossen", status_text, flags=re.M):
+            report("Status: AP1 als abgeschlossen geführt")
+        if re.search(r"Wissenslücke[^\n]*\b(bestätigt|nachgewiesen)\b", status_text) and "nicht abschließend" not in status_text:
+            report("Status: Wissenslücke als bestätigt/nachgewiesen geführt")
+    if DESIGN.is_file():
+        design = read(DESIGN)
+        if re.search(r"Forschungslücke[^\n]*(abschließend bestätigt|ist bewiesen|gilt als bewiesen)", design, flags=re.I):
+            report("Forschungsdesign: Forschungslücke als abschließend bestätigt formuliert")
+    if review.is_file():
+        rtext = read(review)
+        if re.search(r"HyConCheck ist neuartig|HyConCheck ist neu\b|erstmals in der Literatur", rtext):
+            report("Review A–E: unzulässige Neuartigkeitsbehauptung")
+
+
 def check_research_protocol_status(protocol_findings: list[str]) -> None:
     if not BACKLOG.is_file():
         return
@@ -648,6 +849,9 @@ def main() -> int:
     check_forecast_rule(forecast_findings)
     protocol_findings = check_research_protocol()
     check_research_protocol_status(protocol_findings)
+    register_findings = check_literature_register()
+    register_findings += check_audit_precision()
+    check_literature_status(register_findings)
 
     if findings:
         print("Befunde:")

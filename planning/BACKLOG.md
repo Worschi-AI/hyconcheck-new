@@ -6,7 +6,7 @@ Statuswerte: `offen`, `in Arbeit`, `blockiert`, `abgeschlossen`. Ein Eintrag wir
 
 ## Nächste fachliche Etappe
 
-**BL-002 – Recherche gemäß Rechercheprotokoll durchführen (AP1).** BL-001 (Protokoll) ist abgeschlossen; AP1 bleibt offen.
+**BL-002.2 – Literaturrecherche Cluster F–I (Entity Resolution, Temporal Reasoning, Temporal Knowledge Graphs, Status / State Transition Modeling) (AP1).** BL-002.1 (Cluster A–E) ist abgeschlossen; BL-002 insgesamt und AP1 bleiben offen.
 
 ## Einrichtung (Repository)
 
@@ -20,7 +20,12 @@ Statuswerte: `offen`, `in Arbeit`, `blockiert`, `abgeschlossen`. Ein Eintrag wir
 | ID | Titel | Status | Artefakt (geplant) |
 |---|---|---|---|
 | BL-001 | Rechercheprotokoll und Suchstrategie für den Stand der Technik definieren: Fragestellungen, Recherchethemen nach §34, Suchbegriffe, Quellen/Datenbanken, Quellenpriorität (§34), Ein-/Ausschlusskriterien, Screening-Verfahren, Provenienz- und Dokumentationsform | abgeschlossen (17.09.2026) | `references/RESEARCH_PROTOCOL.md` (V1.0); Vorlagen `references/LITERATURE_SEARCH_LOG.md`, `references/SOURCES.md`, `references/LITERATURE_MATRIX.csv` (leer). Abgeschlossen ist nur die Protokolldefinition – keine Recherche durchgeführt, kein Stand der Technik bewertet, keine Lücke bestätigt, AP1 offen. |
-| BL-002 | Recherche gemäß `references/RESEARCH_PROTOCOL.md` durchführen: Suchläufe in den definierten Systemen (Abschnitte 5, 6, 19), Screening (Abschnitt 10), Snowballing (Abschnitt 18) bis Stopkriterium (Abschnitt 17); Quellen mit vollständiger Provenienz erfassen (keine ungeprüften Quellen) | offen – nächste fachliche Etappe | `references/LITERATURE_SEARCH_LOG.md`, `references/SOURCES.md`, `references/LITERATURE_MATRIX.csv` |
+| BL-002 | Recherche gemäß `references/RESEARCH_PROTOCOL.md` durchführen: Suchläufe in den definierten Systemen (Abschnitte 5, 6, 19), Screening (Abschnitt 10), Snowballing (Abschnitt 18) bis Stopkriterium (Abschnitt 17); Quellen mit vollständiger Provenienz erfassen (keine ungeprüften Quellen). Strukturiert in Teiltranchen BL-002.1–BL-002.5 (Planung, kein Ist-Aufwand). | offen – in Arbeit (1 von 5 Tranchen) | `references/LITERATURE_SEARCH_LOG.md`, `references/SOURCES.md`, `references/LITERATURE_MATRIX.csv`, `references/reviews/` |
+| BL-002.1 | Recherchetranche Cluster A–E (Contradiction Detection, NLI, Document-level NLI, Cross-document Contradiction Detection, Semantic Consistency Checking) inkl. Zwischenauswertung | abgeschlossen (17.09.2026) | 41 Suchläufe, 52 Registereinträge (47 aufgenommen), Matrix mit 47 Zeilen, `references/reviews/REVIEW_A_E_CONTRADICTION_NLI.md` (vorläufig; keine Lücken-/Hypothesenbewertung) |
+| BL-002.2 | Recherchetranche Cluster F–I (Entity Resolution, Temporal Reasoning, Temporal Knowledge Graphs, Status / State Transition Modeling); Strings ES-03/ES-04 nach Befund aus BL-002.1 neu fassen; IEEE/ACM/Springer/ScienceDirect einbeziehen | offen – nächste fachliche Etappe | Suchprotokoll, Register, Matrix, `references/reviews/REVIEW_F_I_*.md` |
+| BL-002.3 | Recherchetranche Cluster J–M (Fact Verification, Evidence Graphs, Knowledge Graph Reasoning, Neuro-symbolic AI) | offen | Suchprotokoll, Register, Matrix, Review |
+| BL-002.4 | Recherchetranche Cluster N–P (Uncertainty Calibration, Evidence Fusion, Contradiction Benchmarks) inkl. vorgemerkter Treffer aus BL-002.1 | offen | Suchprotokoll, Register, Matrix, Review |
+| BL-002.5 | Backward-/Forward-Snowballing der Kernarbeiten und Sättigungsprüfung nach Protokoll Abschnitt 17; Beschaffung nicht zugänglicher Volltexte (SRC-0003, SRC-0051, Abstract-Basis-Quellen) | offen | Suchprotokoll, Register, Sättigungsnachweis |
 | BL-003 | Technischen Lösungsraum und Stand der Technik strukturiert auswerten (Verfahren, Benchmarks, Taxonomien, Evidenzrepräsentation, Fusion, Kalibrierung) | offen | `docs/STATE_OF_THE_ART.md` |
 | BL-004 | Wissenslücke (§4) durch Literaturrecherche überprüfen: `gestützt` / `präzisiert` / `widerlegt` mit Belegen über Source-IDs (Protokoll Abschnitt 16); Ergebnis begründen | offen | Abschnitt in `docs/RESEARCH_DESIGN.md`, ADR |
 | BL-005 | Forschungsfragen F1–F6 und Hypothesen H1–H7 operationalisieren: Metriken, Entscheidungskriterien, geplante Experimente je Hypothese (kein Umformulieren, keine Vorwegnahme von Ergebnissen) | offen | `docs/RESEARCH_DESIGN.md`, `experiments/REGISTER.md` |
